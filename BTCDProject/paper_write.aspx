@@ -174,7 +174,7 @@
                                     <asp:CheckBox ID="boatCck" runat="server" Text="선박" />
                                     <asp:CheckBox ID="airCck" runat="server" Text="항공" />
                                 )
-                                    <asp:Button ID="mapBtn" runat="server" Text="경로설정" OnClick="mapBtn_Click" />
+                                    <asp:Button ID="mapBtn" runat="server" Text="경로설정" />
                                 </font>
                             </td>
                         </tr>
@@ -279,7 +279,7 @@
                     </table>
                     <!-- 등록의 경우에는 redirect시 무조건 page값을 0으로 보내준다 -->
                     <input type="reset" />
-                    <asp:Button ID ="okBtn" runat ="server" Text ="등록" onclick="okBtn_Click"/>
+                    <asp:Button ID ="okBtn" runat ="server" Text ="등록"/>
             </div>
         </div>
        

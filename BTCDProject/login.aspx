@@ -31,11 +31,11 @@
                         <td> <asp:textBox ID="pwBox" TextMode="Password" runat="server" placeholder="패스워드를 입력해주세요" CssClass="input"></asp:textBox></br> </td>
                     </tr>
                     <tr>
-                        <td colspan="2"><asp:label id="warnLabel" runat="server" CssClass="lbl"></br></asp:label></td>
+                        <td colspan="2"><asp:label id="warnLabel" runat="server" CssClass="lbl"><br></br></asp:label></td>
                     </tr>
                     <tr>
                         <td colspan="2"> 
-                            <!--<asp:Button ID="joinBtn" CssClass="btn" runat="server" Text="회원가입" /> -->
+                            <asp:Button ID="joinBtn" CssClass="btn" runat="server" Text="회원가입" OnClick="joinBtn_Click" />
                             <asp:Button ID="okBtn" CssClass="btn" runat="server" Text="로그인" OnClick="okBtn_Click" /> 
                         </td>
                     </tr>

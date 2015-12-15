@@ -12,26 +12,25 @@
 <body>
     <!-- 주로 aspx.cs에서 작업하게됩니다 -->
     <form id="form1" runat="server">
-        <div class="wrapper">
+        <div id="Container">
 
             <!-- 헤더 -->
-            <div class="header">
-                <div id="img">
-                    <!-- img는 common.css에서 처리해준다 -->
-                </div>
-                <div id="status">
-                    <asp:Label ID="userLbl" CssClass="idLbl" Text="손님Label" runat="server"></asp:Label><asp:Label CssClass="idLbl" text="님&nbsp; |" runat="server"></asp:Label>
-                    <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" OnClick="logoutBtn_Click"/>
+            <div class="headerwrap">
+                <div class="Top_bar">
+                <a href="./list.aspx" class="com_logo"></a>
+                    <div id="status">
+                        <asp:Label CssClass="idLbl" Text="&nbsp;님&nbsp;|&nbsp;" runat="server"></asp:Label>
+                        <asp:Label ID="userLbl" CssClass="idLbl" Text="송슬기" runat="server"></asp:Label>
+                        <asp:Button ID="logoutBtn" Text="로그아웃" CssClass="out_btn" runat="server" OnClick="logoutBtn_Click"/>
+                    </div>
                 </div>
             </div>
 
             <!-- 네비 -->
-            <div class="nav">
-                <div class="btn">
-                    <asp:ImageButton ID="writeB" ImageUrl="~/img/write.png" runat="server" OnClick="writeBtn_Click"/>
-                </div>
-                <div class="btn">
-                    <asp:ImageButton ID="listB" ImageUrl="~/img/list.png" runat="server" OnClick="listBtn_Click"/>
+            <div class="navimenu">
+                <div class="menu_title">
+                    <asp:ImageButton ID="writeB" ImageUrl="~/img/write.png" CssClass="write_icon" runat="server" OnClick="writeBtn_Click"/>
+                    <asp:ImageButton ID="listB" ImageUrl="~/img/list.png" CssClass="list_icon" runat="server" OnClick="listBtn_Click"/>
                 </div>
             </div>
 

@@ -72,7 +72,7 @@ namespace BTCDProject
 
         protected void writeBtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("./paper_write.aspx");
+            Response.Redirect("./paper_write01.aspx");
         }
 
         protected void listBtn_Click(object sender, EventArgs e)

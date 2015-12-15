@@ -51,5 +51,10 @@ namespace BTCDProject
                 DBClass.disconnect(); // 해제
             }
         }
+
+        protected void joinBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("./join.aspx");
+        }
     }
 }

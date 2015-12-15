@@ -106,6 +106,7 @@
                             <div class="select_result">
                                 <div class="label">이름</div>
                                 <div class="label">직급</div>
+                                <div class="label">교통운임</div>
                                 <div class="label">통행료</div>
                                 <div class="label">숙박비</div>
                                 <div class="label">식비</div>
@@ -114,6 +115,7 @@
                             <div class="select_result">
                                 <asp:TextBox ID="user_name" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="position" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="pay_trans1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_toll1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_room1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_food1" runat="server"></asp:TextBox>
@@ -122,6 +124,7 @@
                             <div class="select_result">
                                 <asp:TextBox ID="user_name2" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="position2" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="pay_trans2" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_toll2" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_room2" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_food2" runat="server"></asp:TextBox>
@@ -130,6 +133,7 @@
                             <div class="select_result">
                                 <asp:TextBox ID="user_name3" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="position3" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="pay_trans3" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_toll3" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_room3" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_food3" runat="server"></asp:TextBox>
@@ -138,6 +142,7 @@
                             <div class="select_result">
                                 <asp:TextBox ID="user_name4" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="position4" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="pay_trans4" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_toll4" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_room4" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_food4" runat="server"></asp:TextBox>
@@ -163,7 +168,7 @@
                     </div>
                 </div>
                 <div class="bottom_btn">
-                    <asp:Button ID="save" runat="server" Text="등록" Cssclass="save_btn btnhover"/>
+                    <asp:Button ID="save" runat="server" Text="등록" Cssclass="save_btn btnhover" OnClick="save_Click"/>
                     <asp:Button ID="cancel" runat="server" Text="취소" Cssclass="cancel_btn btnhover" />
                 </div>
             </div>
