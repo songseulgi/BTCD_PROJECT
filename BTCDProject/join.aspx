@@ -9,7 +9,7 @@
     <!-- jQuery를 이용해서 keypress가 일어났을 경우에는 항상 flag를 0으로 바꿔준다  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
-
+         
         // 회원가입시 id, 비밀번호의 유효성 검사
         // 이름은 2글자~10글자의 제한을 둔다
         // id는 크게 글자 수 제한을 두지 않는다
@@ -55,7 +55,7 @@
                     </td>
                     <td></td>
                 </tr>
-                  
+                     
                 <tr>
                     <td>ID </td>
                     <td>
