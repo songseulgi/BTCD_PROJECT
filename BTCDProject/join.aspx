@@ -15,7 +15,7 @@
         // id는 크게 글자 수 제한을 두지 않는다
         //   
         $(document).ready(function () {
-
+             
             $("#nameBox").focusout(function () {
                 if ($("#nameBox").val().length > 1 && $("#nameBox").val().length < 11) {
                     $("#nameLbl").text('1');
