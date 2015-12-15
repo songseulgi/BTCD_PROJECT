@@ -8,6 +8,6 @@ namespace BTCDProject
 {
     public class DBClass
     {
-         
+        int a;
     }
 }
