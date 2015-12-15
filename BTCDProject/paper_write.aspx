@@ -259,7 +259,7 @@
                         </tr>
                         <tr>
                             <td align="left" colspan="7">
-                                <asp:label ID="total_trans" Text="교통운임" runat="server"></asp:label><asp:TextBox ID="memo_pay" runat="server"></asp:TextBox>
+                                <asp:label ID="total_trans" Text="교통운임" runat="server"></asp:label><asp:TextBox ID="label_memo1" runat="server"></asp:TextBox>
                                 <asp:label ID="total_room" Text="숙박비" runat="server"></asp:label><asp:TextBox ID="label_memo2" runat="server" />
                                 <asp:label ID="total_food" Text="식비" runat="server"></asp:label><asp:TextBox ID="label_memo3" runat="server" />
                                 <asp:label ID="total_work" Text="일비" runat="server"></asp:label><asp:TextBox ID="label_memo4" runat="server" />

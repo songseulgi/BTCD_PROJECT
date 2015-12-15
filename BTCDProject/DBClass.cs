@@ -82,15 +82,15 @@ namespace BTCDProject
 
         // for list.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // 리스트의 요소들을 위한 쿼리
-        public static SqlDataReader listLoad(string user_id)
+        public static SqlDataAdapter listLoad(string user_id)
         {
             string query = "SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = "
                             + user_id
                             + ")"
                             + "A";
             SqlCommand cmd = new SqlCommand(query, conn);
-            reader = cmd.ExecuteReader();
-            return reader;
+            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+            return adapt;
         }
 
         public static SqlDataAdapter listLoad2(string user_id)

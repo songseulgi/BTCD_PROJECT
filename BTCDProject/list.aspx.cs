@@ -47,26 +47,13 @@ namespace BTCDProject
 
         private void Reload()
         {
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = @"Server=localhost;uid=sa;pwd=Sb11011101;database=ReportDB";
-            conn.Open();
-            string query = "DECLARE @paging_size INT DECLARE @page INT SET @paging_size = 5 SET @page = "
-                            + page_num
-                            + " SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM report WHERE user_id = "
-                            + user_id
-                            + ")"
-                            + "A WHERE ROW_NUM > (@paging_size * @page) AND ROW_NUM <= (@paging_size * (@page + 1))";
-            string sql = " SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = "
-                            + user_id
-                            + ")"
-                            + "A";
-            SqlCommand cmd = new SqlCommand(sql, conn);
-            SqlDataAdapter Adapt = new SqlDataAdapter(cmd);
+            DBClass.connect();
+            SqlDataAdapter Adapt = DBClass.listLoad(user_id);
             DataSet ds = new DataSet();
             Adapt.Fill(ds, "board_seongho");
             DataGridt.DataSource = ds;
             DataGridt.DataBind();
-            conn.Close();
+            DBClass.disconnect();
         }
 
         private void DataGridt_PageIndexChanged(object source, DataGridPageChangedEventArgs e)

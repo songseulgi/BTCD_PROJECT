@@ -35,7 +35,7 @@ namespace BTCDProject
             page_num = Request.QueryString["page_num"];
             userLbl.Text = id_value;
 
-            string source = @"Server=localhost;uid=sa;pwd=Sb11011101;database=ReportDB";
+            string source = @"Server=localhost;uid=sa;pwd=123;database=ReportDB";
 
             // 1. db 연결
             SqlConnection conn = new SqlConnection(source);
