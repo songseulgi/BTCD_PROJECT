@@ -13,7 +13,7 @@
         // 회원가입시 id, 비밀번호의 유효성 검사
         // 이름은 2글자~10글자의 제한을 둔다
         // id는 크게 글자 수 제한을 두지 않는다
-        //  
+        //   
         $(document).ready(function () {
 
             $("#nameBox").focusout(function () {
