@@ -21,7 +21,7 @@ namespace BTCDProject
         public static void connect()
         {
             conn = new SqlConnection();
-            conn.ConnectionString = @"Server=localhost;uid=sa;pwd=123;database=ReportDB";
+            conn.ConnectionString = @"Server=172.101.0.4,1433;uid=sa;pwd=Sb11011101;database=ReportDB";
             conn.Open();
         }
 
