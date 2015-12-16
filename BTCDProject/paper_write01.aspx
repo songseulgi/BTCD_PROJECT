@@ -113,8 +113,8 @@
                                 <div class="label">일비</div>
                             </div>
                             <div class="select_result">
-                                <asp:TextBox ID="user_name" runat="server"></asp:TextBox>
-                                <asp:TextBox ID="position" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="user_name1" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="position1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_trans1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_toll1" runat="server"></asp:TextBox>
                                 <asp:TextBox ID="pay_room1" runat="server"></asp:TextBox>
