@@ -34,6 +34,21 @@
                     $("#pay_total2").val(sum.toString());
                 }
             });
+            window.onbeforeunload = function () {
+                return "페이지를 벗어나시곘습니까?";
+            }
+
+            $("#keyword").on("keydown", function (e) {
+                if (e.keyCode == 13) {
+                    //alert(e.keyCode);
+                    e.preventDefault();
+                    searchPlaces();
+                    return false;
+                }
+            })
+            $("form#form1").on("submit", function (e) {
+                window.onbeforeunload = null;
+            })
         });
     </script>
     

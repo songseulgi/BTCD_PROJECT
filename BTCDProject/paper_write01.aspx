@@ -11,18 +11,20 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+   
+     <%-- 맵 스크립트--%>
     <script src="https://apis.daum.net/maps/maps3.js?apikey=f333e298a02ed205a65a9b5858c36d21&libraries=services"></script>
-
-    <script>
+    <script src="https://apis.skplanetx.com/tmap/js?version=1&format=javascript&appKey=79fff6a6-68dd-39f1-a694-e99ed450544a"></script>
+   
+     <script>
         $(document).ready(function () {
             $("#cal_Date1").datepicker({
                 showOn: 'button',
-                //buttonText: 'Show Date',
-                buttonImageOnly: true,
-                buttonImage: 'img/calendar.png',
-                dateFormat: 'yy/mm/dd',
-                constrainInput: true
-
+                    //buttonText: 'Show Date',
+                    buttonImageOnly: true,
+                    buttonImage: 'img/calendar.png',
+                    dateFormat: 'yy/mm/dd',
+                    constrainInput: true
             });
             $(".ui-datepicker-trigger").mouseover(function () {
                 $(this).css('cursor', 'pointer');
@@ -35,27 +37,31 @@
                 dateFormat: 'yy/mm/dd',
                 constrainInput: true
             });
+            $(".ui-datepicker-trigger").mouseover(function () {
+                $(this).css('cursor', 'pointer');
+            });
+            window.onbeforeunload = function() {
+                return "페이지를 벗어나시곘습니까?";
+            }
 
-        });
-    </script>
-    <script type="text/javascript">        //back key 방지
-        function back_event() {
-            if (event.keyCode == 8 ) { // 8 백스페이스
-                if (confirm("이전 페이지로 돌아가시겠습니다?") == true) {
-                    window.history.forward(-1);
-                }
-                else {
+            $("#keyword").on("keydown", function (e) {
+                if (e.keyCode == 13) {
+                    //alert(e.keyCode);
+                    e.preventDefault();
+                    searchPlaces();
                     return false;
                 }
-            }
-            else {
-                window.history.go(0);
-            }
-        }
-     </script>
+            })
+            $("form#form1").on("submit", function (e) {
+                window.onbeforeunload = null;
+            })
+            
+        });
+    </script>
+    
 </head>
-<body onkeydown="return back_event();">
-    <form id="form1" runat="server">
+<body>
+    <form id="form1" runat="server" >
         <div id="Container">
             <div class="headerwrap">
                 <div class="Top_bar">
@@ -76,7 +82,7 @@
                 <div class="content">
                     <div class="content_title">출 장 명 령 서</div>
                     <div class="content_att">
-                        <div class="label">1. 출장 기간을 선택하세요.</div>
+                        <div class="label">1. 출장 기간을 입력하세요.</div>
                         <div class="yearsearch">
                             <asp:TextBox ID="cal_Date1" CssClass="dateresult" runat="server"></asp:TextBox>
                         </div>
@@ -97,21 +103,434 @@
                     </div>
                     <div class="content_att">
                         <div class="label">3. 출장지를 입력하세요.</div>
-                        <div id="map"></div>
-                        <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=f333e298a02ed205a65a9b5858c36d21"></script>
-                        <script>
-                            var container = document.getElementById('map');
-                            var options = {
-                                center: new daum.maps.LatLng(33.450701, 126.570667),
-                                level: 3
-                            };
-
-                            var map = new daum.maps.Map(container, options);
-                        </script>
-                        <div class="map_search">
-                            <asp:TextBox ID="search_text" CssClass="" runat="server"></asp:TextBox>
-                            <asp:Button ID="search_btn" Text="검 색" CssClass="searchbtn btnhover" runat="server" />
+                        <div class="map_wrap">
+                            <div id="map"></div>
+                            <div id="menu_wrap" class="bg_white">
+                                <div class="option">
+                                    <input type="text" value="남춘천역" id="keyword" class="search_text" onsubmit="return false;"/>
+                                    <input type="button" value="검 색" class="searchbtn btnhover" onclick="searchPlaces();"/>
+                                </div>
+                                <hr />
+                                <ul id="placesList"></ul>
+                                <div id="pagination"></div>
+                                <div id="tmap"></div>
+                            </div>
                         </div>
+                        <script src="https://apis.daum.net/maps/maps3.js?apikey=f333e298a02ed205a65a9b5858c36d21"></script>
+                        <script type="text/javascript">
+                            /*
+        좌표계
+        다음 : EPSG:4326
+        Tmap : EPSG:3857
+         -> 다음에서 EPSG:4326의 형식인 좌표를 얻어와서 EPSG:3857(Tmap)으로 convert해서 
+         경로 출력 및 거리계산 하는 함수에 파라미터로 넣어준다.
+        */
+
+                            // 마커를 담을 배열입니다
+                            var markers = [];
+                            var count = 0;                  // 출발,도착을 확인 하기위한 count
+                            var count_bt = 0;               // 검색을 통하여 출발,도착 구분 count
+                            var startX, startY;
+                            var endX, endY;
+                            var start_point, end_point;
+                            var convert_x, convert_y;
+                            var total_Dis, total_Fare, total_time;
+
+                            var resultDis = new Array();
+                            var resultFare = new Array();
+                            var resultTime = new Array();
+
+                            var sum_dis = 0;
+                            var sum_fare = 0;
+                            var sum_time = 0;
+
+                            var mapT;
+
+                            function initTmap() {
+                                // 4560197.7989427,
+                                centerLL = new Tmap.LonLat(14145677.4, 4511257.6);
+                                mapT = new Tmap.Map({
+                                    div: 'tmap',
+                                    width: '80%',
+                                    height: '600px',
+                                    transitionEffect: "resize",
+                                    animation: true
+                                });
+
+                                //mapT.events.register("click", null, onClickMap);
+                                $("#tmap").hide();
+                            };
+                            initTmap();
+
+                            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                                mapOption = {
+                                    center: new daum.maps.LatLng(37.863743, 127.723939), // 지도의 중심좌표
+                                    level: 4 // 지도의 확대 레벨
+                                };
+
+                            // 지도를 생성합니다    
+                            var map = new daum.maps.Map(mapContainer, mapOption);
+
+                            // 장소 검색 객체를 생성합니다
+                            var ps = new daum.maps.services.Places();
+
+                            // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+                            var infowindow = new daum.maps.InfoWindow({ zIndex: 1 });
+
+                            // 키워드로 장소를 검색합니다
+                            searchPlaces();
+
+                            // 키워드 검색을 요청하는 함수입니다
+                            function searchPlaces() {
+
+                                var keyword = document.getElementById('keyword').value;
+
+                                if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                                    alert('키워드를 입력해주세요!');
+                                    return false;
+                                }
+
+                                // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+                                ps.keywordSearch(keyword, placesSearchCB);
+                            }
+
+                            // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+                            function placesSearchCB(status, data, pagination) {
+                                if (status === daum.maps.services.Status.OK) {
+
+                                    // 정상적으로 검색이 완료됐으면
+                                    // 검색 목록과 마커를 표출합니다
+                                    displayPlaces(data.places);
+
+                                    // 페이지 번호를 표출합니다
+                                    displayPagination(pagination);
+
+                                } else if (status === daum.maps.services.Status.ZERO_RESULT) {
+
+                                    alert('검색 결과가 존재하지 않습니다.');
+                                    return;
+
+                                } else if (status === daum.maps.services.Status.ERROR) {
+
+                                    alert('검색 결과 중 오류가 발생했습니다.');
+                                    return;
+
+                                }
+                            }
+
+                            // 검색 결과 목록과 마커를 표출하는 함수입니다
+                            function displayPlaces(places) {
+
+                                var listEl = document.getElementById('placesList'),
+                                menuEl = document.getElementById('menu_wrap'),
+                                fragment = document.createDocumentFragment(),
+                                bounds = new daum.maps.LatLngBounds(),
+                                listStr = '';
+
+                                // 검색 결과 목록에 추가된 항목들을 제거합니다
+                                removeAllChildNods(listEl);
+
+                                // 지도에 표시되고 있는 마커를 제거합니다
+                                removeMarker();
+
+                                for (var i = 0; i < places.length; i++) {
+
+                                    // 마커를 생성하고 지도에 표시합니다
+                                    var placePosition = new daum.maps.LatLng(places[i].latitude, places[i].longitude),
+                                        marker = addMarker(placePosition, i),
+                                        itemEl = getListItem(i, places[i], marker); // 검색 결과 항목 Element를 생성합니다
+
+                                    // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                                    // LatLngBounds 객체에 좌표를 추가합니다
+                                    bounds.extend(placePosition);
+
+                                    // 마커와 검색결과 항목에 mouseover 했을때
+                                    // 해당 장소에 인포윈도우에 장소명을 표시합니다
+                                    // mouseout 했을 때는 인포윈도우를 닫습니다
+                                    (function (marker, title) {
+                                        daum.maps.event.addListener(marker, 'mouseover', function () {
+                                            displayInfowindow(marker, title);
+                                        });
+
+                                        daum.maps.event.addListener(marker, 'mouseout', function () {
+                                            infowindow.close();
+                                        });
+
+                                        itemEl.onmouseover = function () {
+                                            displayInfowindow(marker, title);
+                                        };
+
+                                        itemEl.onmouseout = function () {
+                                            infowindow.close();
+                                        };
+                                    })(marker, places[i].title);
+
+                                    fragment.appendChild(itemEl);
+                                }
+
+                                // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+                                listEl.appendChild(fragment);
+                                menuEl.scrollTop = 0;
+
+                                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                                map.setBounds(bounds);
+                            }
+
+                            // 검색결과 항목을 Element로 반환하는 함수입니다
+                            function getListItem(index, places) {
+
+                                var el = document.createElement('li'),
+                                itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+                                            '<div class="info">' +
+                                            '   <h5>' + places.title + '</h5>';
+
+                                if (places.newAddress) {
+                                    itemStr += '    <span>' + places.newAddress + '</span>' +
+                                                '   <span class="jibun gray">' + places.address + '</span>';
+                                } else {
+                                    itemStr += '    <span>' + places.address + '</span>';
+                                }
+
+                                itemStr += '  <span class="tel">' + places.phone + '</span>' +
+                                          '</div>';
+
+                                el.innerHTML = itemStr;
+                                el.className = 'item';
+
+                                return el;
+                            }
+
+                            // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+                            function addMarker(position, idx, title) {
+                                var imageSrc = 'http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                                    imageSize = new daum.maps.Size(36, 37),  // 마커 이미지의 크기
+                                    imgOptions = {
+                                        spriteSize: new daum.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                                        spriteOrigin: new daum.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                                        offset: new daum.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                                    },
+                                    markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                                        marker = new daum.maps.Marker({
+                                            position: position, // 마커의 위치
+                                            image: markerImage
+                                        });
+
+                                marker.setMap(map); // 지도 위에 마커를 표출합니다
+                                markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+                                return marker;
+                            }
+
+                            // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+                            function removeMarker() {
+                                for (var i = 0; i < markers.length; i++) {
+                                    markers[i].setMap(null);
+                                }
+                                markers = [];
+                            }
+
+                            // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+                            function displayPagination(pagination) {
+                                var paginationEl = document.getElementById('pagination'),
+                                    fragment = document.createDocumentFragment(),
+                                    i;
+
+                                // 기존에 추가된 페이지번호를 삭제합니다
+                                while (paginationEl.hasChildNodes()) {
+                                    paginationEl.removeChild(paginationEl.lastChild);
+                                }
+
+                                for (i = 1; i <= pagination.last; i++) {
+                                    var el = document.createElement('a');
+                                    el.href = "#";
+                                    el.innerHTML = i;
+
+                                    if (i === pagination.current) {
+                                        el.className = 'on';
+                                    } else {
+                                        el.onclick = (function (i) {
+                                            return function () {
+                                                pagination.gotoPage(i);
+                                            }
+                                        })(i);
+                                    }
+                                    fragment.appendChild(el);
+                                }
+                                paginationEl.appendChild(fragment);
+                            }
+
+                            // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+                            // 인포윈도우에 장소명을 표시합니다
+                            function displayInfowindow(marker, title) {
+                                var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+                                infowindow.setContent(content);
+                                infowindow.open(map, marker);
+                            }
+
+                            // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+                            function removeAllChildNods(el) {
+                                while (el.hasChildNodes()) {
+                                    el.removeChild(el.lastChild);
+                                }
+                            }
+
+                            // 지도를 클릭했을 때 evt 
+                            daum.maps.event.addListener(map, 'click', function (mouseEvent) {
+
+                                // 클릭한 위도, 경도 정보를 가져옵니다 
+                                var latlng = mouseEvent.latLng;
+
+                                var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+                                message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+                                var cgMsg = '변환 위도 : ' + get3857LonLat(latlng.getLng()) + ' 이고, ';
+                                cgMsg += '경도는 ' + get3857LonLat(latlng.getLat()) + ' 입니다';
+                                //var resultDiv = document.getElementById('result');
+                                //resultDiv.innerHTML = message;
+
+                                //var resultDiv = document.getElementById('result');
+                                //resultDiv.innerHTML = message;
+
+                                $("#result").html(message);
+
+
+                                console.log(message);
+                                console.log(cgMsg);
+                                //console.log(resultDiv);
+
+                                // 출발점과 도착점 구분
+                                if (count % 2 == 0) {       // 출발점을 때의 좌표
+
+                                    convert_X = get3857LonLat(latlng.getLng());
+                                    convert_Y = get3857LonLat(latlng.getLat());
+
+                                    startX = convert_X.lon
+                                    startY = convert_Y.lon;
+
+                                    console.log(startX.lon);
+                                    console.log(startY.lon);
+
+                                    console.log("시작점 확인 :" + startX + ", " + startY);
+                                    console.log("시작점 확인 :" + start_point);
+
+                                } else {                    // 도착점일 때의 좌표
+
+                                    convert_X = get3857LonLat(latlng.getLng());
+                                    convert_Y = get3857LonLat(latlng.getLat());
+
+                                    endX = convert_X.lon;
+                                    endY = convert_Y.lon;
+
+                                    console.log(endX.lon);
+                                    console.log(endY.lon);
+
+                                    console.log("도착점 확인 :" + endX + ", " + endY);
+                                    console.log("도착점 확인 :" + end_point);
+                                }
+
+                                //document.getElementById("TotalDistance").value = sum_dis;
+                                //document.getElementById("TotalFare").value = sum_fare;
+
+                                var routeFormat = new Tmap.Format.KML({ extractStyles: true, extractAttributes: true });
+
+                                var urlStr = "https://apis.skplanetx.com/tmap/routes?version=1&format=xml";
+                                urlStr += "&startX=" + startX;
+                                urlStr += "&startY=" + startY;
+                                urlStr += "&endX=" + endX;
+                                urlStr += "&endY=" + endY;
+                                urlStr += "&appKey=79fff6a6-68dd-39f1-a694-e99ed450544a";
+
+                                var prtcl = new Tmap.Protocol.HTTP({
+                                    url: urlStr,
+                                    format: routeFormat
+                                });
+
+                                var routeLayer = new Tmap.Layer.Vector("route", { protocol: prtcl, strategies: [new Tmap.Strategy.Fixed()] });
+                                var tdata = new Tmap.TData();
+                                //routeLayer.events.register("featuresadded", routeLayer, onDrawnFeatures);
+                                routeLayer.events.register("loadend", routeLayer, onCompleteLoadGetDistanceLonLat);
+                                tdata.events.register("onComplete", tdata, onCompleteLoadGetDistanceLonLat);
+                                mapT.addLayer(routeLayer);
+
+                                count++;
+                                console.log("마우스 클릭 수 : " + count);
+
+                            });
+
+                            function loadGetDistanceLonLat(lonlat) {
+
+                                var tData = new Tmap.TData();
+                                console.log("loadGetDistanceLonLat");
+
+                            }
+
+                            function onCompleteLoadGetDistanceLonLat(o) {
+                                console.log("onCompleteLoadGetDistanceLonLat");
+                                var xml = $(this.responseXML);
+
+                                /*
+                                 sum_dis : 총 거리값
+                                 sum_fare : 톨비 값
+                                 sum_time : 총 이동시간
+                                */
+
+                                total_Dis = (($(o.response.priv.responseXML).find("totalDistance").text()) / 1000).toFixed(2);
+                                total_Fare = $(o.response.priv.responseXML).find("totalFare").text();
+                                total_time = (($(o.response.priv.responseXML).find("totalTime").text()) / 60).toFixed(0);
+                                //resultDis = parseFloat(total_Dis);
+
+                                //console.log(resultDis);
+                                resultDis.push(total_Dis);
+                                resultFare.push(total_Fare);
+                                resultTime.push(total_time);
+
+                                sum_dis += Number(resultDis[resultDis.length - 1]);
+                                sum_fare += Number(resultFare[resultFare.length - 1]);
+                                sum_time += Number(resultTime[resultTime.length - 1]);
+
+                                if (count >= 2) {
+                                    var hour;
+                                    console.log("이동거리 : " + sum_dis + "km");
+                                    console.log("총 통행료 : " + sum_fare + "원");
+                                    //console.log(resultDis);
+
+                                    if (sum_time > 60) {
+
+                                        hour = parseInt(sum_time / 60);
+                                        sum_time = parseInt(sum_time % 60);
+                                        console.log("총 이동시간 : " + hour + "시간 " + sum_time + "분");
+
+                                    } else
+                                        console.log("총 이동시간 : " + sum_time + "분");
+                                }
+                                //console.log(jQuery(this.responseXML).find("fullAddress").text())
+                                console.log("onCompleteLoadGetDistanceLonLat");
+                            }
+
+                            function onLoadSuccess() {
+                                var totalDistance = this.loadGetDistanceLonLat();
+
+                                console.log(this);
+                                //document.getElementById('result').value = totalDistance;
+                                console.log("onLoadSuccess : " + jQuery(this.responseXML).find("totalDistance").text());
+                                console.log("onLoadSuccess");
+                            }
+
+                           // 좌표계 변환 부분
+
+                            var pr_3857 = new Tmap.Projection("EPSG:3857");
+                            var pr_4326 = new Tmap.Projection("EPSG:4326");
+
+                            function get3857LonLat(coordX, coordY) {
+                                return new Tmap.LonLat(coordX, coordY).transform(pr_4326, pr_3857);
+                            }
+
+                            function get4326LonLat(coordX, coordY) {
+                                return new Tmap.LonLat(coordX, coordY).transform(pr_3857, pr_4326);
+                            }
+
+                        </script>
                         <div class="map_result"></div>
                     </div>
                     <div class="content_att">
