@@ -45,7 +45,7 @@
         <div id="Container">
             <div class="headerwrap">
                 <div class="Top_bar">
-                    <a href="" class="com_logo"></a>
+                    <a href="./list.aspx" class="com_logo"></a>
                     <div id="status">
                         <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" CssClass="out_btn" />
                         <asp:Label CssClass="idLbl" Text="&nbsp;님&nbsp;|&nbsp;" runat="server"></asp:Label><asp:Label ID="userLbl" CssClass="idLbl" Text="송슬기" runat="server"></asp:Label>
@@ -54,8 +54,8 @@
             </div>
             <div class="navimenu">
                 <div class="menu_title">
-                    <a href="" class="write_icon"></a>
-                    <a href="" class="list_icon"></a>
+                    <a href="./paper_write01.aspx" class="write_icon"></a>
+                    <a href="./list.aspx" class="list_icon"></a>
                 </div>
             </div>
             <div class="contentBox">

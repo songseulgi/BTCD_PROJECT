@@ -71,7 +71,7 @@ namespace BTCDProject
         {
             // 1. 출장기간 선택
             Response.Cookies["cal_Date1"].Value = cal_Date1.Text;
-            Response.Cookies["cal_Date2"].Value = cal_Date1.Text;
+            Response.Cookies["cal_Date2"].Value = cal_Date2.Text;
 
             // 2. 교통수단 체크
             // 자동차가 체크되어 있다면
@@ -255,6 +255,7 @@ namespace BTCDProject
                 Response.Cookies["billload5"].Value = "";
             }
 
+            Session["user_id"] = user_id;
             Response.Redirect("./paper_write.aspx");
         }
     }

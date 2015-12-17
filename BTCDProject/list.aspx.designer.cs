@@ -22,15 +22,6 @@ namespace BTCDProject {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// userLbl 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label userLbl;
-        
-        /// <summary>
         /// logoutBtn 컨트롤입니다.
         /// </summary>
         /// <remarks>
@@ -40,22 +31,13 @@ namespace BTCDProject {
         protected global::System.Web.UI.WebControls.Button logoutBtn;
         
         /// <summary>
-        /// writeB 컨트롤입니다.
+        /// userLbl 컨트롤입니다.
         /// </summary>
         /// <remarks>
         /// 자동 생성 필드입니다.
         /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton writeB;
-        
-        /// <summary>
-        /// listB 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton listB;
+        protected global::System.Web.UI.WebControls.Label userLbl;
         
         /// <summary>
         /// tableLbl 컨트롤입니다.
