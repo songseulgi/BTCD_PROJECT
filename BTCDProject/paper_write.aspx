@@ -34,76 +34,36 @@
                     $("#pay_total2").val(sum.toString());
                 }
             });
-            window.onbeforeunload = function () {
-                return "페이지를 벗어나시곘습니까?";
-            }
-
-            $("#keyword").on("keydown", function (e) {
-                if (e.keyCode == 13) {
-                    //alert(e.keyCode);
-                    e.preventDefault();
-                    searchPlaces();
-                    return false;
-                }
-            })
-            $("form#form1").on("submit", function (e) {
-                window.onbeforeunload = null;
-            })
         });
     </script>
-    
-    <%--<script type="text/javascript"> //back key 방지
-        //window.history.forward();
-        //function noBack() { window.history.forward(); }
-        window.alert('경고');
-        window.history.back();
-    </script>--%>
-    <script type="text/javascript">        //back key 방지
-        function back_event() {
-            if (event.keyCode == 8) { // 8 백스페이스
-                if (confirm("이전 페이지로 돌아가시겠습니다?") == true) {
-                    window.history.forward(-1);
-                }
-                else {
-                    return false;
-                }
-            }
-            else {
-                window.history.go(0);
-            }
-        }
-     </script>
 </head>
-<body  onkeydown="return back_event();">
+<body>
     <!-- 명령서 작성페이지 -->
     <form id="form1" runat="server">
         
-            <div class='wrapper'>
+            <div id="Container">
 
-                <!-- 헤더 -->
-                <div class="header">
-                    <div id="img">
-                        <!-- img는 common.css에서 처리해준다 -->
-                    </div>
+                <div class="headerwrap">
+                <div class="Top_bar">
+                    <a href="./list.aspx" class="com_logo"></a>
                     <div id="status">
-                        <asp:Label ID="userLbl" CssClass="idLbl" Text="손님Label" runat="server"></asp:Label><asp:Label CssClass="idLbl" text="님&nbsp; |" runat="server"></asp:Label>
-                        <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" OnClick="logoutBtn_Click"/>
+                        <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" CssClass="out_btn" />
+                        <asp:Label CssClass="idLbl" Text="&nbsp;님&nbsp;|&nbsp;" runat="server"></asp:Label><asp:Label ID="userLbl" CssClass="idLbl" Text="송슬기" runat="server"></asp:Label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 네비 -->
-                <div class="nav">
-                    <div class="btn">
-                        <asp:ImageButton ID="writeB" ImageUrl="~/img/write.png" runat="server" OnClick="writeBtn_Click"/>
-                    </div>
-                    <div class="btn">
-                        <asp:ImageButton ID="listB" ImageUrl="~/img/list.png" runat="server" OnClick="listBtn_Click"/>
+                <div class="navimenu">
+                    <div class="menu_title">
+                        <a href="./paper_write01.aspx" class="write_icon"></a>
+                        <a href="./list.aspx" class="list_icon"></a>
                     </div>
                 </div>
 
                 <!-- 컨텐츠 -->
+                <div class="contentBox">
                 <div class="content">
-                    <h2 align='center'> 출장 명령서 </h2>
+                    <h2 style:text-align="center"> 출장 명령서 </h2>
                     
                     <!-- 상단 테이블 -->
                     <table border="1">
@@ -144,34 +104,46 @@
                     <table border="1">
                         <colgroup>
                             <col width="10%" />
-                            <col width="45%" />
-                            <col width="45%" />
+                            <col width="15%" />
+                            <col width="15%" />
+                            <col width="30%" />
+                            <col width="30%" />
                         </colgroup>
                         <tr>
                             <td colspan="7"><b>여비규정 제4조 규정에 의거 다음과 같이 출장을 명함.</b></ td>
                         </tr>
                         <tr>
                             <td rowspan="5"> 출장</br >복명</ td>
-                            <td> 출장기간</td>
-                            <td> 출장지</td>
+                            <td>성명</td>
+                            <td>직급</td>
+                            <td>출장기간</td>
+                            <td>출장지</td>
                         </tr>
 
                         <tr>
+                            <td><asp:TextBox ID="name1" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="position1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="term1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="location1" runat="server"></asp:TextBox></td>
                         </tr>
 
                         <tr>
+                            <td><asp:TextBox ID="name2" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="position2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="term2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="location2" runat="server"></asp:TextBox></td>
                         </tr>
 
                         <tr>
+                            <td><asp:TextBox ID="name3" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="position3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="term3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="location3" runat="server"></asp:TextBox></td>
                         </tr>
 
                         <tr>
+                            <td><asp:TextBox ID="name4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="position4" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="term4" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="location4" runat="server"></asp:TextBox></td>
                         </tr>
@@ -179,7 +151,7 @@
                         <tr>
                             <td> 목적</br>및</br>내용 </td>
                             <td colspan="4">
-                                <asp:TextBox ID="memo1" mode="multiline" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="memo1" textmode="multiline" Columns="72" Rows="6" runat="server"></asp:TextBox>
                             </td>
                         </tr>
                     </table>
@@ -201,7 +173,7 @@
                         </tr>
                     
                         <tr>
-                            <td rowspan="9"> 여비</br >정산</ td>
+                            <td rowspan="10"> 여비</br >정산</ td>
                             <td colspan="7">
                                 <font style=" font-size: 12px;">
                                 이동경로(교통수단 :
@@ -211,85 +183,96 @@
                                     <asp:CheckBox ID="boatCck" runat="server" Text="선박" />
                                     <asp:CheckBox ID="airCck" runat="server" Text="항공" />
                                 )
-                                    <asp:Button ID="mapBtn" runat="server" Text="경로설정" />
                                 </font>
                             </td>
                         </tr>
 
                         <tr>
-                            <td> 출발</td >
-                            <td> 경유</td >
-                            <td> 경유</td >
-                            <td> 경유</td >
-                            <td> 경유</td >
-                            <td> 경유</td >
-                            <td> 도착</td >
+                            <td>출발</td >
+                            <td>경유</td >
+                            <td>경유</td >
+                            <td>경유</td >
+                            <td>경유</td >
+                            <td>경유</td >
+                            <td>도착</td >
                         </tr>
 
                         <tr>
                             <td>
-                                <asp:TextBox ID="start" runat="server" Text=""></asp:TextBox>
-                                <asp:Label ID ="start1" runat ="server" Text =""></asp:Label></br >                       
+                                <asp:TextBox ID="start" runat="server" Text=""></asp:TextBox></br >
+                                <asp:TextBox ID="start_dis" runat="server" CssClass="under_text" value="(자차이용)"></asp:TextBox>
+
                             </td>
                             <td>
-                                <asp:Label ID ="mid_loc1" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="move_dis1" runat ="server" Text =""></asp:Label>
+                                <asp:Label ID="mid_loc1" runat="server" Text=""></asp:Label></br >
+                               <asp:TextBox ID="mid_dis1" runat="server" CssClass="under_text" value="Km">km</asp:TextBox>
                             </td>
                             <td>
-                                <asp:Label ID ="mid_loc2" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="move_dis2" runat ="server" Text =""></asp:Label>
+                                <asp:Label ID="mid_loc2" runat="server" Text=""></asp:Label></br >
+                               <asp:TextBox ID="mid_dis2" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:Label ID ="mid_loc3" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="move_dis3" runat ="server" Text =""></asp:Label>
+                                <asp:Label ID="mid_loc3" runat="server" Text=""></asp:Label></br >
+                                <asp:TextBox ID="mid_dis3" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:Label ID ="mid_loc4" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="move_dis4" runat ="server" Text =""></asp:Label>
+                                <asp:Label ID="mid_loc4" runat="server" Text=""></asp:Label></br >
+                                    <asp:TextBox ID="mid_dis4" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:Label ID ="mid_loc5" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="move_dis5" runat ="server" Text =""></asp:Label>
+                                <asp:Label ID="mid_loc5" runat="server" Text=""></asp:Label></br >
+                                    <asp:TextBox ID="mid_dis5" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox ID="departure" runat="server" Text=""></asp:TextBox>
-                                <asp:Label ID ="end" runat ="server" Text =""></asp:Label></br >
-                                <asp:Label ID ="total_dis" runat ="server" Text =""></asp:Label>
+                                <asp:TextBox ID="departure" runat="server" Text=""></asp:TextBox></br >
+                                <asp:TextBox ID="total_dis2" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
                             </td>
                         </tr>
                    
                         <tr>
-                            
-                            <td> 교통운임</td >
-                            <td> 통행료</td >
-                            <td> 숙박비</td >
-                            <td> 식&nbsp;&nbsp;비 </td>
-                            <td> 일&nbsp;&nbsp;비 </td>
-                            <td colspan="2"> 계</td>
+                            <td>성명</td>
+                            <td>교통운임</td >
+                            <td>통행료</td >
+                            <td>숙박비</td >
+                            <td>식&nbsp;&nbsp;비 </td>
+                            <td>일&nbsp;&nbsp;비 </td>
+                            <td>계</td>
                         </tr>
                         <tr>
+                            <td><asp:TextBox ID="name_copy1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_trans1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_toll1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_room1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_food1" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_work1" runat="server"></asp:TextBox></td>
-                            <td colspan="2"><asp:TextBox ID="pay_total1" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_total1" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
+                            <td><asp:TextBox ID="name_copy2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_trans2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_toll2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_room2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_food2" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_work2" runat="server"></asp:TextBox></td>
-                            <td colspan="2"><asp:TextBox ID="pay_total2" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_total2" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
+                            <td><asp:TextBox ID="name_copy3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_trans3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_toll3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_room3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_food3" runat="server"></asp:TextBox></td>
                             <td><asp:TextBox ID="pay_work3" runat="server"></asp:TextBox></td>
-                            <td colspan="2"><asp:TextBox ID="pay_total3" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_total3" runat="server"></asp:TextBox></td>
+                        </tr>
+                        <tr>
+                            <td><asp:TextBox ID="name_copy4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_trans4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_toll4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_room4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_food4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_work4" runat="server"></asp:TextBox></td>
+                            <td><asp:TextBox ID="pay_total4" runat="server"></asp:TextBox></td>
                         </tr>
                         <tr>
                             <td colspan="7"><br /></td >
@@ -315,11 +298,10 @@
                         </tr>
                     </table>
                     <!-- 등록의 경우에는 redirect시 무조건 page값을 0으로 보내준다 -->
-                    <input type="reset" />
-                    <asp:Button ID ="okBtn" runat ="server" Text ="등록"/>
+                    <asp:Button ID="okBtn" runat ="server" Text ="등록" OnClick="okBtn_Click"/>
             </div>
         </div>
-       
+       </div>
     </form >
 
 </body>

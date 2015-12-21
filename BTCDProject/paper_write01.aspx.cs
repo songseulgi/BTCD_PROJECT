@@ -71,7 +71,7 @@ namespace BTCDProject
         {
             // 1. 출장기간 선택
             Response.Cookies["cal_Date1"].Value = cal_Date1.Text;
-            Response.Cookies["cal_Date2"].Value = cal_Date1.Text;
+            Response.Cookies["cal_Date2"].Value = cal_Date2.Text;
 
             // 2. 교통수단 체크
             // 자동차가 체크되어 있다면
@@ -132,6 +132,23 @@ namespace BTCDProject
             //
             // - 계산된 값들을 받을 블록 - 
 
+            // 3. 출장지 입력 
+            Response.Cookies["start"].Value = Server.UrlEncode(start.Text);
+            Response.Cookies["mid_loc1"].Value = Server.UrlEncode(mid_loc1.Text);
+            Response.Cookies["mid_loc2"].Value = Server.UrlEncode(mid_loc2.Text);
+            Response.Cookies["mid_loc3"].Value = Server.UrlEncode(mid_loc3.Text);
+            Response.Cookies["mid_loc4"].Value = Server.UrlEncode(mid_loc4.Text);
+            Response.Cookies["mid_loc5"].Value = Server.UrlEncode(mid_loc5.Text);
+            Response.Cookies["departure"].Value = Server.UrlEncode(departure.Text);
+
+            //자차일경우
+            Response.Cookies["start_dis"].Value = Server.UrlEncode(start_dis.Text);
+            Response.Cookies["mid_dis1"].Value = Server.UrlEncode(mid_dis1.Text);
+            Response.Cookies["mid_dis2"].Value = Server.UrlEncode(mid_dis2.Text);
+            Response.Cookies["mid_dis3"].Value = Server.UrlEncode(mid_dis3.Text);
+            Response.Cookies["mid_dis4"].Value = Server.UrlEncode(mid_dis4.Text);
+            Response.Cookies["mid_dis5"].Value = Server.UrlEncode(mid_dis5.Text);
+            Response.Cookies["total_dis2"].Value = Server.UrlEncode(total_dis2.Text);
 
             // 4. 여비 항목 입력
             // 이 부분에서 한글로 진행되는 부분들은 모두 Server.UrlEncode로 인코딩을 해줘야한다
@@ -255,8 +272,13 @@ namespace BTCDProject
                 Response.Cookies["billload5"].Value = "";
             }
 
+            Session["user_id"] = user_id;
             Response.Redirect("./paper_write.aspx");
         }
-    }
 
+        protected void logoutBtn_Click1(object sender, EventArgs e)
+        {
+            Response.Redirect("./login.aspx");
+        }
+    }
 }

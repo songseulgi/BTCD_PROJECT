@@ -55,6 +55,22 @@
             $("form#form1").on("submit", function (e) {
                 window.onbeforeunload = null;
             })
+
+            $("#carCck").click(function () {
+                var state = $('#map').css('display');
+                var state2 = $('#menu_wrap').css('display');
+                if (state && state2 == 'none') { // state가 none 상태일경우 
+                    $('#map').show();
+                    $('#menu_wrap').show(); // ID가 menu_wrap인 요소를 show();
+                    $('.select_result2').show();
+                    $('.under_text').show();
+                } else { // 그 외에는
+                    $('#map').hide();
+                    $('#menu_wrap').hide();// ID가 menu_wrap인 요소를 hide();    
+                    $('.select_result2').hide();
+                    $('.under_text').hide();
+                }
+            });
             
         });
     </script>
@@ -103,7 +119,6 @@
                     </div>
                     <div class="content_att">
                         <div class="label">3. 출장지를 입력하세요.</div>
-                        <div class="map_wrap">
                             <div id="map"></div>
                             <div id="menu_wrap" class="bg_white">
                                 <div class="option">
@@ -115,7 +130,6 @@
                                 <div id="pagination"></div>
                                 <div id="tmap"></div>
                             </div>
-                        </div>
                         <script src="https://apis.daum.net/maps/maps3.js?apikey=f333e298a02ed205a65a9b5858c36d21"></script>
                         <script type="text/javascript">
                             /*
@@ -129,7 +143,6 @@
                             // 마커를 담을 배열입니다
                             var markers = [];
                             var count = 0;                  // 출발,도착을 확인 하기위한 count
-                            var count_bt = 0;               // 검색을 통하여 출발,도착 구분 count
                             var startX, startY;
                             var endX, endY;
                             var start_point, end_point;
@@ -143,6 +156,7 @@
                             var sum_dis = 0;
                             var sum_fare = 0;
                             var sum_time = 0;
+                            var total_pay = 0;
 
                             var mapT;
 
@@ -177,20 +191,28 @@
                             // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
                             var infowindow = new daum.maps.InfoWindow({ zIndex: 1 });
 
+
                             // 키워드로 장소를 검색합니다
-                            searchPlaces();
+                            //searchPlaces();
 
                             // 키워드 검색을 요청하는 함수입니다
-                            function searchPlaces() {
+                            var keyword;
+                            var keywordS = new Array();
 
-                                var keyword = document.getElementById('keyword').value;
+                            function searchPlaces() {
+                                keyword = document.getElementById('keyword').value;
 
                                 if (!keyword.replace(/^\s+|\s+$/g, '')) {
-                                    alert('키워드를 입력해주세요!');
+                                    //alert('키워드를 입력해주세요!');
                                     return false;
                                 }
 
+
+
                                 // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+                                console.log("검색 키워드 : " + keyword);
+                                //console.log(keywordS);
+
                                 ps.keywordSearch(keyword, placesSearchCB);
                             }
 
@@ -301,6 +323,7 @@
                             }
 
                             // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+
                             function addMarker(position, idx, title) {
                                 var imageSrc = 'http://i1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
                                     imageSize = new daum.maps.Size(36, 37),  // 마커 이미지의 크기
@@ -312,7 +335,8 @@
                                     markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions),
                                         marker = new daum.maps.Marker({
                                             position: position, // 마커의 위치
-                                            image: markerImage
+                                            image: markerImage,
+                                            map: map
                                         });
 
                                 marker.setMap(map); // 지도 위에 마커를 표출합니다
@@ -320,6 +344,9 @@
 
                                 return marker;
                             }
+
+                            //var marker_te = addMarker();
+
 
                             // 지도 위에 표시되고 있는 마커를 모두 제거합니다
                             function removeMarker() {
@@ -375,10 +402,15 @@
                                 }
                             }
 
+                            //// 마커를 클릭했을때 evt
+                            //daum.maps.event.addListener(marker, 'click', function () {
+                            //    alert('마커를 클릭했습니다!');
+                            //});
+
                             // 지도를 클릭했을 때 evt 
                             daum.maps.event.addListener(map, 'click', function (mouseEvent) {
 
-                                // 클릭한 위도, 경도 정보를 가져옵니다 
+                                // 클릭한 위도, 경도 정보를 가져옵니다                                 
                                 var latlng = mouseEvent.latLng;
 
                                 var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
@@ -386,18 +418,12 @@
 
                                 var cgMsg = '변환 위도 : ' + get3857LonLat(latlng.getLng()) + ' 이고, ';
                                 cgMsg += '경도는 ' + get3857LonLat(latlng.getLat()) + ' 입니다';
-                                //var resultDiv = document.getElementById('result');
-                                //resultDiv.innerHTML = message;
-
-                                //var resultDiv = document.getElementById('result');
-                                //resultDiv.innerHTML = message;
 
                                 $("#result").html(message);
 
 
-                                console.log(message);
-                                console.log(cgMsg);
-                                //console.log(resultDiv);
+                                //console.log(keyword);
+                                //console.log(keywordS);
 
                                 // 출발점과 도착점 구분
                                 if (count % 2 == 0) {       // 출발점을 때의 좌표
@@ -408,12 +434,7 @@
                                     startX = convert_X.lon
                                     startY = convert_Y.lon;
 
-                                    console.log(startX.lon);
-                                    console.log(startY.lon);
-
                                     console.log("시작점 확인 :" + startX + ", " + startY);
-                                    console.log("시작점 확인 :" + start_point);
-
                                 } else {                    // 도착점일 때의 좌표
 
                                     convert_X = get3857LonLat(latlng.getLng());
@@ -422,11 +443,7 @@
                                     endX = convert_X.lon;
                                     endY = convert_Y.lon;
 
-                                    console.log(endX.lon);
-                                    console.log(endY.lon);
-
                                     console.log("도착점 확인 :" + endX + ", " + endY);
-                                    console.log("도착점 확인 :" + end_point);
                                 }
 
                                 //document.getElementById("TotalDistance").value = sum_dis;
@@ -453,6 +470,45 @@
                                 tdata.events.register("onComplete", tdata, onCompleteLoadGetDistanceLonLat);
                                 mapT.addLayer(routeLayer);
 
+                                //// keyword 도착,경유지 구분
+
+                                // 도착지와 경유지 구분을 위해 keyword 배열에 담기
+                                keywordS.push(keyword);
+
+                                //for (var i = 0; i < keywordS.length; i++) {
+                                //    console.log(keywordS[i]);
+                                //}
+
+                                //console.log(keywordS.length);
+                                //console.log(keywordS[length+1]);
+                                //console.log(keywordS);
+
+                                if (count == 0) {
+                                    console.log("출발지는 " + keyword + " 입니다");
+                                    document.getElementById("start").value = keyword;
+                                }
+
+                                if (count >= 1) {
+                                    if (confirm("도착지 입니까?")) {
+                                        console.log("도착지는 " + keyword);
+                                        document.getElementById("departure").value = keyword;
+                                    } else {
+                                        console.log("경유지는 " + keywordS[(count)]);
+                                        //document.getElementById("mid_loc1").value = keywordS[(count)];
+                                        switch (count) {
+                                            case 1:
+                                                document.getElementById("mid_loc1").value = keywordS[(count)];
+                                                break;
+                                            case 2:
+                                                document.getElementById("mid_loc2").value = keywordS[(count)];
+                                                break;
+                                            case 3:
+                                                document.getElementById("mid_loc3").value = keywordS[(count)];
+                                                break;
+                                        }
+                                    }
+                                }
+
                                 count++;
                                 console.log("마우스 클릭 수 : " + count);
 
@@ -461,12 +517,16 @@
                             function loadGetDistanceLonLat(lonlat) {
 
                                 var tData = new Tmap.TData();
+                                var Address = tData.getAddressFromLonLat(lonlat, option);
+                                console.log("loadGetDistanceLonLat");
+                                console.log(jQuery(this.responseXML).find("coordinateInfocoordType").text());
+
                                 console.log("loadGetDistanceLonLat");
 
                             }
 
                             function onCompleteLoadGetDistanceLonLat(o) {
-                                console.log("onCompleteLoadGetDistanceLonLat");
+                                console.log("onCompleteLoadGetDistanceLonLat_start");
                                 var xml = $(this.responseXML);
 
                                 /*
@@ -475,19 +535,26 @@
                                  sum_time : 총 이동시간
                                 */
 
-                                total_Dis = (($(o.response.priv.responseXML).find("totalDistance").text()) / 1000).toFixed(2);
+                                total_Dis = (($(o.response.priv.responseXML).find("totalDistance").text()) / 1000).toFixed(0);
                                 total_Fare = $(o.response.priv.responseXML).find("totalFare").text();
                                 total_time = (($(o.response.priv.responseXML).find("totalTime").text()) / 60).toFixed(0);
                                 //resultDis = parseFloat(total_Dis);
 
-                                //console.log(resultDis);
                                 resultDis.push(total_Dis);
                                 resultFare.push(total_Fare);
                                 resultTime.push(total_time);
 
+                                console.log(resultDis);
+
                                 sum_dis += Number(resultDis[resultDis.length - 1]);
                                 sum_fare += Number(resultFare[resultFare.length - 1]);
                                 sum_time += Number(resultTime[resultTime.length - 1]);
+
+                                // 교통운임 = (거리 * 휘발유)/연비
+                                total_pay = ((sum_dis * 1400) / 10).toFixed(0);
+
+                                // data textbox에 넣기
+
 
                                 if (count >= 2) {
                                     var hour;
@@ -505,7 +572,29 @@
                                         console.log("총 이동시간 : " + sum_time + "분");
                                 }
                                 //console.log(jQuery(this.responseXML).find("fullAddress").text())
-                                console.log("onCompleteLoadGetDistanceLonLat");
+                                var city_do = jQuery(this.responseXML).find("coordinateInfocity_do").text();
+                                var gu_gun = jQuery(this.responseXML).find("coordinateInfogu_gun").text();
+                                // var label = new Tmap.Label("&nbsp;주소 : " + city_do + " " + gu_gun + " " + legalDong + " " + bunji);
+
+                                // 경유지들 dis text box에 넣기
+
+                                document.getElementById("pay_trans1").value = total_pay;
+                                document.getElementById("pay_toll1").value = sum_fare;
+                                document.getElementById("total_dis2").value = sum_dis+" km";
+
+                                switch (count) {
+                                    case 2: document.getElementById("mid_dis1").value = resultDis[count - 1] + " km";
+                                        break;
+                                    case 3: document.getElementById("mid_dis2").value = resultDis[count - 1] + " km";
+                                        break;
+                                    case 4: document.getElementById("mid_dis3").value = resultDis[count - 1] + " km";
+                                        break;
+                                    case 5: document.getElementById("mid_dis4").value = resultDis[count - 1] + " km";
+                                        break;
+                                    case 5: document.getElementById("mid_dis5").value = resultDis[count - 1] + " km";
+                                        break;
+                                }
+                                console.log("onCompleteLoadGetDistanceLonLat_end");
                             }
 
                             function onLoadSuccess() {
@@ -517,7 +606,7 @@
                                 console.log("onLoadSuccess");
                             }
 
-                           // 좌표계 변환 부분
+                            // 좌표계 변환 부분
 
                             var pr_3857 = new Tmap.Projection("EPSG:3857");
                             var pr_4326 = new Tmap.Projection("EPSG:4326");
@@ -531,7 +620,37 @@
                             }
 
                         </script>
-                        <div class="map_result"></div>
+                        <div class="map_result">
+                            <div class="expensewrap">
+                                <div class="select_result">
+                                    <div class="label">출발</div>
+                                    <div class="label">경유</div>
+                                    <div class="label">경유</div>
+                                    <div class="label">경유</div>
+                                    <div class="label">경유</div>
+                                    <div class="label">경유</div>
+                                    <div class="label">도착</div>
+                                </div>
+                                <div class="select_result">
+                                    <asp:TextBox ID="start" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="mid_loc1" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="mid_loc2" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="mid_loc3" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="mid_loc4" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="mid_loc5" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="departure" runat="server"></asp:TextBox>
+                                </div>
+                                <div class="select_result2">
+                                    <asp:TextBox ID="start_dis" runat="server" CssClass="under_text" value="자차이용"></asp:TextBox>
+                                    <asp:TextBox ID="mid_dis1" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                    <asp:TextBox ID="mid_dis2" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                    <asp:TextBox ID="mid_dis3" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                    <asp:TextBox ID="mid_dis4" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                    <asp:TextBox ID="mid_dis5" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                    <asp:TextBox ID="total_dis2" runat="server" CssClass="under_text" value="Km"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="content_att">
                         <div class="label">4. 여비 항목을 입력하세요. (동승자가 있을 경우 추가 입력 가능.) </div>
