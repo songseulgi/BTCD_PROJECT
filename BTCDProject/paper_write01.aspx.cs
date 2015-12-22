@@ -72,6 +72,7 @@ namespace BTCDProject
         // 모든 내용 저장클릭버튼
         protected void save_Click(object sender, EventArgs e)
         {
+            string location = "";
             // 1. 출장기간 선택
             Response.Cookies["cal_Date1"].Value = cal_Date1.Text;
             Response.Cookies["cal_Date2"].Value = cal_Date2.Text;
@@ -152,6 +153,43 @@ namespace BTCDProject
             Response.Cookies["mid_dis4"].Value = Server.UrlEncode(mid_dis4.Text);
             Response.Cookies["mid_dis5"].Value = Server.UrlEncode(mid_dis5.Text);
             Response.Cookies["total_dis2"].Value = Server.UrlEncode(total_dis2.Text);
+            Response.Cookies["pay_memo"].Value = Server.UrlEncode(pay_memo.Text);
+
+            if (!mid_loc1.Text.Equals(""))
+            {
+                location += mid_loc1.Text;
+            }
+
+            if (!mid_loc2.Text.Equals(""))
+            {
+                location += "," + mid_loc2.Text;
+            }
+
+            if (!mid_loc3.Text.Equals(""))
+            {
+                location += "," + mid_loc3.Text;
+            }
+
+            if (!mid_loc4.Text.Equals(""))
+            {
+                location += "," + mid_loc4.Text;
+            }
+
+            if (!mid_loc5.Text.Equals(""))
+            {
+                location += "," + mid_loc5.Text + ",";
+            }
+
+            if (!departure.Text.Equals(""))
+            {
+                if (mid_loc1.Text.Equals(""))
+                    location += departure.Text;
+                else
+                {
+                    location += "," + departure.Text;
+                }
+            }
+            Response.Cookies["location"].Value = Server.UrlEncode(location);
 
             // 4. 여비 항목 입력
             // 이 부분에서 한글로 진행되는 부분들은 모두 Server.UrlEncode로 인코딩을 해줘야한다
@@ -230,50 +268,50 @@ namespace BTCDProject
             // 영수증 유무 체크 끝
 
             // 6. 파일 업로드 유무 체크
-            if (billload1.HasFile)
-            {
-                Response.Cookies["billload1"].Value = billload1.FileName.ToString();
-            }
-            else
-            {
-                Response.Cookies["billload1"].Value = "";
-            }
+            //if (billload1.HasFile)
+            //{
+            //    Response.Cookies["billload1"].Value = billload1.FileName.ToString();
+            //}
+            //else
+            //{
+            //    Response.Cookies["billload1"].Value = "";
+            //}
 
-            if (billload2.HasFile)
-            {
-                Response.Cookies["billload2"].Value = billload2.FileName.ToString();
-            }
-            else
-            {
-                Response.Cookies["billload2"].Value = "";
-            }
+            //if (billload2.HasFile)
+            //{
+            //    Response.Cookies["billload2"].Value = billload2.FileName.ToString();
+            //}
+            //else
+            //{
+            //    Response.Cookies["billload2"].Value = "";
+            //}
 
-            if (billload3.HasFile)
-            {
-                Response.Cookies["billload3"].Value = billload3.FileName.ToString();
-            }
-            else
-            {
-                Response.Cookies["billload3"].Value = "";
-            }
+            //if (billload3.HasFile)
+            //{
+            //    Response.Cookies["billload3"].Value = billload3.FileName.ToString();
+            //}
+            //else
+            //{
+            //    Response.Cookies["billload3"].Value = "";
+            //}
 
-            if (billload4.HasFile)
-            {
-                Response.Cookies["billload4"].Value = billload4.FileName.ToString();
-            }
-            else
-            {
-                Response.Cookies["billload4"].Value = "";
-            }
+            //if (billload4.HasFile)
+            //{
+            //    Response.Cookies["billload4"].Value = billload4.FileName.ToString();
+            //}
+            //else
+            //{
+            //    Response.Cookies["billload4"].Value = "";
+            //}
 
-            if (billload5.HasFile)
-            {
-                Response.Cookies["billload5"].Value = billload5.FileName.ToString();
-            }
-            else
-            {
-                Response.Cookies["billload5"].Value = "";
-            }
+            //if (billload5.HasFile)
+            //{
+            //    Response.Cookies["billload5"].Value = billload5.FileName.ToString();
+            //}
+            //else
+            //{
+            //    Response.Cookies["billload5"].Value = "";
+            //}
 
             Session["user_id"] = user_id;
             Response.Redirect("./paper_write.aspx");

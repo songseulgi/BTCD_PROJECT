@@ -85,6 +85,13 @@ namespace BTCDProject
                 term3.Text = Request.Cookies["cal_date1"].Value + dayDefine(Request.Cookies["cal_date2"].Value);
             if (name4.Text.Length != 0)
                 term4.Text = Request.Cookies["cal_date1"].Value + dayDefine(Request.Cookies["cal_date2"].Value);
+            location1.Text = Server.UrlDecode(Request.Cookies["location"].Value);
+            if (!name2.Text.Equals(""))
+                location2.Text = location1.Text;
+            if (!name3.Text.Equals(""))
+                location3.Text = location1.Text;
+            if (!name4.Text.Equals(""))
+                location4.Text = location1.Text;
 
             name_copy1.Text = Server.UrlDecode(Request.Cookies["user_name1"].Value);
             name_copy2.Text = Server.UrlDecode(Request.Cookies["user_name2"].Value);
@@ -108,7 +115,7 @@ namespace BTCDProject
             mid_dis4.Text = Server.UrlDecode(Request.Cookies["mid_dis4"].Value);
             mid_dis5.Text = Server.UrlDecode(Request.Cookies["mid_dis5"].Value);
             total_dis2.Text = Server.UrlDecode(Request.Cookies["total_dis2"].Value);
-
+            label_memo1.Text = Server.UrlDecode(Request.Cookies["pay_memo"].Value);
             // 출장지
 
             pay_trans1.Text = Request.Cookies["pay_trans1"].Value;
@@ -320,7 +327,27 @@ namespace BTCDProject
             // ********************************************* //
             // 3.transport 테이블에 값 넣기
             // SqlCommand cmd3 = DBClass.transportInsert();
-            string query3 = "INSERT INTO TRANSPORT() VALUES()";
+            string query3 = "INSERT INTO TRANSPORT(REPORT_ID, START, START_TYPE, DEPARTURE, MID_LOC1, MID_LOC2, MID_LOC3, MID_LOC4, MID_LOC5, LOC1_DIS, LOC2_DIS, LOC3_DIS, LOC4_DIS, LOC5_DIS, TOTAL_DIS) "
+                           + "VALUES(@report_id, @start, @start_type, @departure, @mid_loc1, @mid_loc2, @mid_loc3, @mid_loc4, @mid_loc5, @loc_dis1, @loc_dis2, @loc_dis3, @loc_dis4, @loc_dis5, @total_dis)";
+            SqlCommand cmd3 = new SqlCommand(query3, conn);
+            SqlDataReader reader3;
+            cmd3.Parameters.AddWithValue("@report_id", MAX);
+            cmd3.Parameters.AddWithValue("@start", start.Text);
+            cmd3.Parameters.AddWithValue("@start_type", start_dis.Text);
+            cmd3.Parameters.AddWithValue("@departure", departure.Text);
+            cmd3.Parameters.AddWithValue("@mid_loc1", mid_loc1.Text);
+            cmd3.Parameters.AddWithValue("@mid_loc2", mid_loc2.Text);
+            cmd3.Parameters.AddWithValue("@mid_loc3", mid_loc3.Text);
+            cmd3.Parameters.AddWithValue("@mid_loc4", mid_loc4.Text);
+            cmd3.Parameters.AddWithValue("@mid_loc5", mid_loc5.Text);
+            cmd3.Parameters.AddWithValue("@loc_dis1", mid_dis1.Text);
+            cmd3.Parameters.AddWithValue("@loc_dis2", mid_dis2.Text);
+            cmd3.Parameters.AddWithValue("@loc_dis3", mid_dis3.Text);
+            cmd3.Parameters.AddWithValue("@loc_dis4", mid_dis4.Text);
+            cmd3.Parameters.AddWithValue("@loc_dis5", mid_dis5.Text);
+            cmd3.Parameters.AddWithValue("@total_dis", total_dis2.Text);
+            reader3 = cmd3.ExecuteReader();
+            reader3.Close();
             // ********************************************* //
 
 

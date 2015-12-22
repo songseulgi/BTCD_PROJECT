@@ -1,24 +1,25 @@
 ﻿@media print {
 
-    div.wrapper {
+
+    div#Container {
         margin: 0;
     }
 
-    div.header {
+    div.headerwrap {
         display: none;
     }
 
-    div.nav {
+    div.navimenu {
         display: none;
     }
 
     div.content {
         visibility: visible;
         position: relative;
-        zoom: 1.56;
+        zoom: 1.435;
         left: 0;
         right: 0;
-        margin: auto auto;
+        margin: 0 !important;
         float: none;
     }
 
@@ -31,11 +32,15 @@
         }
 
         div.content h2 {
-            margin: 1.5% 0;
+            margin: 7% 0 1.5% 0;
             text-align: center;
         }
 
     div.btn_group {
+        display: none !important;
+    }
+
+    .print_btn {
         display: none !important;
     }
 }

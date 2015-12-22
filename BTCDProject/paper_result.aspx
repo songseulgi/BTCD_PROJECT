@@ -20,7 +20,7 @@
                 <div class="Top_bar">
                     <a href="./list.aspx" class="com_logo"></a>
                     <div id="status">
-                        <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" CssClass="out_btn"/>
+                        <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" CssClass="out_btn" OnClick="logoutBtn_Click1"/>
                         <asp:Label CssClass="idLbl" Text="&nbsp;님&nbsp;|&nbsp;" runat="server"></asp:Label><asp:Label ID="userLbl" CssClass="idLbl" Text="송슬기" runat="server"></asp:Label>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             <td><asp:TextBox ID="location4" runat="server" readonly="true"></asp:TextBox></td>
                         </tr>
 
-                        <tr>
+                        <tr style="height:200px;">
                             <td> 목적</br>및</br>내용 </td>
                             <td colspan="4">
                                 <asp:TextBox ID="memo1" textmode="multiline" Columns="72" Rows="6" runat="server" readonly="true"></asp:TextBox>
@@ -251,10 +251,10 @@
                         </tr>
                         <tr>
                             <td align="left" colspan="7">
-                                <asp:label ID="total_trans" Text="교통운임" runat="server"></asp:label><asp:TextBox ID="label_memo1" runat="server" readonly="true"></asp:TextBox>
-                                <asp:label ID="total_room" Text="숙박비" runat="server"></asp:label><asp:TextBox ID="label_memo2" runat="server" readonly="true" />
-                                <asp:label ID="total_food" Text="식비" runat="server"></asp:label><asp:TextBox ID="label_memo3" runat="server" readonly="true" />
-                                <asp:label ID="total_work" Text="일비" runat="server"></asp:label><asp:TextBox ID="label_memo4" runat="server" readonly="true" />
+                                <asp:label ID="total_trans" Text="교통운임 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo1" runat="server" CssClass="memo_labelT"></asp:TextBox>
+                                <asp:label ID="total_room" Text="숙&nbsp; 박&nbsp;비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo2" runat="server"  CssClass="memo_labelT"/>
+                                <asp:label ID="total_food" Text="식　　비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo3" runat="server"  CssClass="memo_labelT"/>
+                                <asp:label ID="total_work" Text="일　　비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo4" runat="server"  CssClass="memo_labelT"/>
                             </td>
                         </tr>
                         <tr>
@@ -270,11 +270,14 @@
                         </tr>
                     </table>
                     <!-- 등록의 경우에는 redirect시 무조건 page값을 0으로 보내준다 -->
-                    <asp:Button ID="okBtn" runat ="server" Text ="등록" />
+                </div>
+                    <div class="bottom_btn">
+                        <input type="button" id="print_go" value="" class="print_btn btnhover" onclick="window.print()" />
+                       
+                    </div>
+                </div>
             </div>
-        </div>
-       </div>
-    </form >
+    </form>
 
 </body>
 </html>

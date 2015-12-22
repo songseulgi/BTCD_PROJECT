@@ -148,7 +148,7 @@
                             <td><asp:TextBox ID="location4" runat="server"></asp:TextBox></td>
                         </tr>
 
-                        <tr>
+                        <tr style="height:200px;">
                             <td> 목적</br>및</br>내용 </td>
                             <td colspan="4">
                                 <asp:TextBox ID="memo1" textmode="multiline" Columns="72" Rows="6" runat="server"></asp:TextBox>
@@ -279,10 +279,10 @@
                         </tr>
                         <tr>
                             <td align="left" colspan="7">
-                                <asp:label ID="total_trans" Text="교통운임" runat="server"></asp:label><asp:TextBox ID="label_memo1" runat="server"></asp:TextBox>
-                                <asp:label ID="total_room" Text="숙박비" runat="server"></asp:label><asp:TextBox ID="label_memo2" runat="server" />
-                                <asp:label ID="total_food" Text="식비" runat="server"></asp:label><asp:TextBox ID="label_memo3" runat="server" />
-                                <asp:label ID="total_work" Text="일비" runat="server"></asp:label><asp:TextBox ID="label_memo4" runat="server" />
+                                <asp:label ID="total_trans" Text="교통운임 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo1" runat="server" CssClass="memo_labelT"></asp:TextBox>
+                                <asp:label ID="total_room" Text="숙&nbsp; 박&nbsp;비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo2" runat="server"  CssClass="memo_labelT"/>
+                                <asp:label ID="total_food" Text="식　　비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo3" runat="server"  CssClass="memo_labelT"/>
+                                <asp:label ID="total_work" Text="일　　비 :" runat="server" CssClass="memo_label"></asp:label><asp:TextBox ID="label_memo4" runat="server"  CssClass="memo_labelT"/>
                             </td>
                         </tr>
                         <tr>
@@ -298,9 +298,13 @@
                         </tr>
                     </table>
                     <!-- 등록의 경우에는 redirect시 무조건 page값을 0으로 보내준다 -->
-                    <asp:Button ID="okBtn" runat ="server" Text ="등록" OnClick="okBtn_Click"/>
-            </div>
-        </div>
+
+                </div>
+                    <div class="bottom_btn">
+                        <asp:Button ID="okBtn" runat="server" Text="등록" OnClick="okBtn_Click" CssClass="save_btn" />
+
+                    </div>
+                </div>
        </div>
     </form >
 

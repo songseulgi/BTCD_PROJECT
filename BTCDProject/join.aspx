@@ -6,7 +6,7 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link rel="stylesheet" type="text/css" href="~/join.css" />
+    <link rel="stylesheet" type="text/css" href="~/common.css" />
     <!-- jQuery를 이용해서 keypress가 일어났을 경우에는 항상 flag를 0으로 바꿔준다  -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script>
@@ -88,13 +88,13 @@
                         <asp:TextBox ID="idBox" runat="server" placeholder="아이디를 입력하세요"></asp:TextBox>
                     </td>
                     <td>
-                        &nbsp;<asp:Button ID="chkBtn" runat="server" Text="중복확인" OnClick="chkBtn_Click" />
+                        <asp:Button ID="chkBtn" runat="server" Text="중복확인" OnClick="chkBtn_Click" class="joinbtn"/>
                     </td>
                 </tr>
                 <tr>
                     <td><span>비밀번호</span></td>
                     <td>
-                        <asp:TextBox ID="pwBox" runat="server" TextMode="Password" placeholder="비밀번호를 입력하세요"></asp:TextBox>
+                        <asp:TextBox ID="pwBox" runat="server" TextMode="Password" placeholder="비밀번호를 입력하세요" CssClass="under"></asp:TextBox>
                     </td>    
                     <td>
 
@@ -103,7 +103,7 @@
                 <tr>
                     <td><span>비밀번호재확인</span></td>
                     <td>
-                        <asp:TextBox ID="pwrBox" runat="server" TextMode="Password" placeholder="비밀번호를 확인해주세요"></asp:TextBox>
+                        <asp:TextBox ID="pwrBox" runat="server" TextMode="Password" placeholder="비밀번호를 확인해주세요" CssClass="under"></asp:TextBox>
                     </td>
                     <td>
 
@@ -111,8 +111,8 @@
                 </tr>
                 <tr>
                     <td style="text-align:center" colspan="3">
-                        <asp:Button ID="backBtn" runat="server" Text="뒤로가기" OnClick="backBtn_Click" />
-                        <asp:Button ID="okBtn" runat="server" Text="회원등록" OnClick="okBtn_Click" />
+                        <asp:Button ID="backBtn" runat="server" Text="뒤로가기" OnClick="backBtn_Click" class="joinbtn"/>
+                        <asp:Button ID="okBtn" runat="server" Text="회원등록" OnClick="okBtn_Click" class="joinbtn"/>
                     </td>
                 </tr>
             </table>

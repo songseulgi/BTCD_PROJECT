@@ -14,19 +14,19 @@
 }
 
 .top {
-    width: 595px;
+    width: 750px;
     height: 120px;
     border: 1px solid;
 }
 
 .center {
-    width: 595px;
+    width: 750px;
     height: 273px;
     border: 1px solid;
 }
 
 .bottom {
-    width: 595px;
+    width: 750px;
     height: 386px;
     border: 1px solid;
 }
@@ -34,8 +34,9 @@
 table {
     text-align: center;
     border-collapse: collapse;
-    width: 595px;
+    width: 750px;
     nowrap;
+    margin:auto auto;
 }
 
 input[type="text"] {
@@ -55,15 +56,20 @@ input {
     border: none;
     background: transparent;
 }
-
+.save_btn {
+    margin:0 0 5px 138px !important;
+}
 textarea {
-    border: none;
-    background: transparent;
+    width:97%;
+    height:97%;
+    border:0;
+    margin-top:2px;
 }
 
 h2 {
-    width: 595px !important;
-    margin: auto;
+    width: 750px;
+    margin: 10px auto;
+    text-align:center;
 }
 
 .btn_group {
@@ -82,4 +88,29 @@ h2 {
     background-position:center;
     background-color:#fff;
     border:0;
+}
+
+#print_go {
+     width:45px;
+     height:45px;
+     float:right;
+     background-image:url("img/print.png");
+     background-size:100%;
+     background-repeat:no-repeat;
+     background-position:center;
+     background-color:#fff;
+     border:0;
+     
+ } 
+
+.memo_label {
+    float:left;
+    width:80px;
+    margin-left:5px;
+    padding:4px 0;
+}
+input[type=text].memo_labelT {
+    float:left;
+    width:570px;
+    text-align:left;
 }
