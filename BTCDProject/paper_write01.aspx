@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="calendar.css" />
     <link rel="stylesheet" type="text/css" href="common.css" />
     <title></title>
@@ -91,7 +91,7 @@
             <div class="navimenu">
                 <div class="menu_title">
                     <a href="" class="write_icon"></a>
-                    <a href="" class="list_icon"></a>
+                    <a href="./list.aspx" class="list_icon"></a>
                 </div>
             </div>
             <div class="contentBox">

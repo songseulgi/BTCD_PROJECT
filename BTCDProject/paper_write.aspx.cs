@@ -15,7 +15,7 @@ namespace BTCDProject
         public string user_id = "";
         public string page_num = "";
         public string id_value = "";
-        public static string CONSTR = @"Server=localhost;uid=sa;pwd=123;database=ReportDB";
+        public static string CONSTR = @"Server=172.101.0.4,1433;uid=sa;pwd=Sb11011101;database=ReportDB";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -259,10 +259,11 @@ namespace BTCDProject
             conn = new SqlConnection();
             conn.ConnectionString = CONSTR;
             conn.Open();
-            string query = "INSERT INTO REPORTTBL(NAME, COMPANY, POSITION, TERM1, LOCATION1, MEMO1, MEMO_PAY, MEMO_ROOM, MEMO_FOOD, MEMO_WORK) "
-                            + "VALUES(@name, @company, @position, @term, @location, @memo, @memo_pay, @memo_room, @memo_food, @memo_work)";
+            string query = "INSERT INTO REPORTTBL(NAME, USER_ID, COMPANY, POSITION, TERM1, LOCATION1, MEMO1, MEMO_PAY, MEMO_ROOM, MEMO_FOOD, MEMO_WORK) "
+                            + "VALUES(@name, @user_id, @company, @position, @term, @location, @memo, @memo_pay, @memo_room, @memo_food, @memo_work)";
             cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@name", name.Text);
+            cmd.Parameters.AddWithValue("@user_id", user_id);
             cmd.Parameters.AddWithValue("@company", company.Text);
             cmd.Parameters.AddWithValue("@position", position.Text);
             cmd.Parameters.AddWithValue("@term", term1.Text);
@@ -274,115 +275,158 @@ namespace BTCDProject
             cmd.Parameters.AddWithValue("@memo_work", label_memo4.Text);
             reader = cmd.ExecuteReader();
             reader.Close();
-            conn.Close();
 
+            // 해당 명령서의 값 가져오기
+            DBClass.connect();
+            MAX = DBClass.getReportMax();
+            DBClass.disconnect();
 
-            //// 첫 insert가 실행된 이후에는 자동으로 report_id값이 1 증가한다
-            //// 그 해당값을 가져와 저장해서 사용해주자
-            //MAX = DBClass.getReportMax();
+            // 2.transport_group 검토
+            // 이 곳에서는 if문을 사용하여 관련된 외부자만 넣어준다
+            string query2 = "INSERT INTO TRANSPORT_GROUP(REPORT_ID, CAR, BUS, SUBWAY, AIRFLY, SHIP) "
+                            + "VALUES(@report_id, @car, @bus, @subway, @airfly, @ship)";
+            SqlCommand cmd2 = new SqlCommand(query2, conn);
+            cmd2.Parameters.AddWithValue("@report_id", MAX);
+            // 체크값들
+            if (carCck.Checked == true)
+                cmd2.Parameters.AddWithValue("@car", "1");
+            else
+                cmd2.Parameters.AddWithValue("@car", "0");
 
-            //// 2.transport_group 검토
-            //// 이 곳에서는 if문을 사용하여 관련된 외부자만 넣어준다
-            //SqlCommand cmd2 = DBClass.tgroupInsert();
-            //cmd2.Parameters.AddWithValue("@report_id",MAX);
-            //// 체크값들
-            //if (carCck.Checked == true)
-            //    cmd2.Parameters.AddWithValue("@car", "1");
-            //else
-            //    cmd2.Parameters.AddWithValue("@car", "0");
+            if (busCck.Checked == true)
+                cmd2.Parameters.AddWithValue("@bus", "1");
+            else
+                cmd2.Parameters.AddWithValue("@bus", "0");
 
-            //if (busCck.Checked == true)
-            //    cmd2.Parameters.AddWithValue("@bus", "1");
-            //else
-            //    cmd2.Parameters.AddWithValue("@bus", "0");
+            if (trainCck.Checked == true)
+                cmd2.Parameters.AddWithValue("@subway", "1");
+            else
+                cmd2.Parameters.AddWithValue("@subway", "0");
 
-            //if (trainCck.Checked == true)
-            //    cmd2.Parameters.AddWithValue("@subway", "1");
-            //else
-            //    cmd2.Parameters.AddWithValue("@subway", "0");
+            if (airCck.Checked == true)
+                cmd2.Parameters.AddWithValue("@airfly", "1");
+            else
+                cmd2.Parameters.AddWithValue("@airfly", "0");
 
-            //if (airCck.Checked == true)
-            //    cmd2.Parameters.AddWithValue("@airfly", "1");
-            //else
-            //    cmd2.Parameters.AddWithValue("@airfly", "0");
-
-            //if (boatCck.Checked == true)
-            //    cmd2.Parameters.AddWithValue("@ship", "1");
-            //else
-            //    cmd2.Parameters.AddWithValue("@ship", "0");
-            //// 쿼리실행
-            //DBClass.reader = cmd2.ExecuteReader();
-            //DBClass.reader.Close();
+            if (boatCck.Checked == true)
+                cmd2.Parameters.AddWithValue("@ship", "1");
+            else
+                cmd2.Parameters.AddWithValue("@ship", "0");
+            // 쿼리실행
+            SqlDataReader reader2 = cmd2.ExecuteReader();
+            reader2.Close();
 
 
             // ********************************************* //
             // 3.transport 테이블에 값 넣기
             // SqlCommand cmd3 = DBClass.transportInsert();
+            string query3 = "INSERT INTO TRANSPORT() VALUES()";
             // ********************************************* //
 
+
+
             // 4.external 검토
-            //SqlCommand cmd4 = DBClass.externInsert();
-            //if (!name_copy1.Text.Equals(""))
-            //{ 
-            //    cmd4.Parameters.AddWithValue("@ext_id", "1");
-            //    cmd4.Parameters.AddWithValue("@report_id", MAX);
-            //    cmd4.Parameters.AddWithValue("@ename", name_copy1.Text);
-            //    cmd4.Parameters.AddWithValue("@eposition", position1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_trans", pay_trans1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_toll", pay_toll1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_room", pay_room1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_food", pay_food1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_work", pay_work1.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_total", pay_total1.Text);
-            //    cmd4.ExecuteNonQuery();
-            //}
+            string query4 = "INSERT INTO EXTERNTBL(EXT_ID, REPORT_ID, ENAME, EPOSITION, EPAY_TRANS, EPAY_TOLL, EPAY_ROOM, EPAY_FOOD, EPAY_WORK, EPAY_TOTAL) "
+                            + "VALUES(@ext_id, @report_id, @ename, @eposition, @epay_trans, @epay_toll, @epay_room, @epay_food, @epay_work, @epay_total)";
+            SqlCommand cmd4 = new SqlCommand(query4, conn);
+            SqlDataReader reader4;
+            if (!name_copy1.Text.Equals(""))
+            {
+                cmd4.Parameters.AddWithValue("@ext_id", "1");
+                cmd4.Parameters.AddWithValue("@report_id", MAX);
+                cmd4.Parameters.AddWithValue("@ename", name_copy1.Text);
+                cmd4.Parameters.AddWithValue("@eposition", position1.Text);
+                cmd4.Parameters.AddWithValue("@epay_trans", pay_trans1.Text);
+                cmd4.Parameters.AddWithValue("@epay_toll", pay_toll1.Text);
+                cmd4.Parameters.AddWithValue("@epay_room", pay_room1.Text);
+                cmd4.Parameters.AddWithValue("@epay_food", pay_food1.Text);
+                cmd4.Parameters.AddWithValue("@epay_work", pay_work1.Text);
+                cmd4.Parameters.AddWithValue("@epay_total", pay_total1.Text);
+                reader4 = cmd4.ExecuteReader();
+                reader4.Close();
+            }
 
-            //if (!name_copy2.Text.Equals(""))
-            //{
-            //    cmd4.Parameters.AddWithValue("@ext_id", "2");
-            //    cmd4.Parameters.AddWithValue("@report_id", MAX);
-            //    cmd4.Parameters.AddWithValue("@ename", name_copy2.Text);
-            //    cmd4.Parameters.AddWithValue("@eposition", position2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_trans", pay_trans2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_toll", pay_toll2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_room", pay_room2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_food", pay_food2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_work", pay_work2.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_total", pay_total2.Text);
-            //    cmd4.ExecuteNonQuery();
-            //}
+            SqlCommand cmd5 = new SqlCommand(query4, conn);
+            if (!name_copy2.Text.Equals(""))
+            {
+                cmd5.Parameters.AddWithValue("@ext_id", "2");
+                cmd5.Parameters.AddWithValue("@report_id", MAX);
+                cmd5.Parameters.AddWithValue("@ename", name_copy2.Text);
+                cmd5.Parameters.AddWithValue("@eposition", position2.Text);
+                cmd5.Parameters.AddWithValue("@epay_trans", pay_trans2.Text);
+                cmd5.Parameters.AddWithValue("@epay_toll", pay_toll2.Text);
+                cmd5.Parameters.AddWithValue("@epay_room", pay_room2.Text);
+                cmd5.Parameters.AddWithValue("@epay_food", pay_food2.Text);
+                cmd5.Parameters.AddWithValue("@epay_work", pay_work2.Text);
+                cmd5.Parameters.AddWithValue("@epay_total", pay_total2.Text);
+                reader4 = cmd5.ExecuteReader();
+                reader4.Close();
+            }
 
-            //if (!name_copy3.Text.Equals(""))
-            //{
-            //    cmd4.Parameters.AddWithValue("@ext_id", "3");
-            //    cmd4.Parameters.AddWithValue("@report_id", MAX);
-            //    cmd4.Parameters.AddWithValue("@ename", name_copy3.Text);
-            //    cmd4.Parameters.AddWithValue("@eposition", position3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_trans", pay_trans3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_toll", pay_toll3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_room", pay_room3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_food", pay_food3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_work", pay_work3.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_total", pay_total3.Text);
-            //    cmd4.ExecuteNonQuery();
-            //}
+            SqlCommand cmd6 = new SqlCommand(query4, conn);
+            if (!name_copy3.Text.Equals(""))
+            {
+                cmd6.Parameters.AddWithValue("@ext_id", "3");
+                cmd6.Parameters.AddWithValue("@report_id", MAX);
+                cmd6.Parameters.AddWithValue("@ename", name_copy3.Text);
+                cmd6.Parameters.AddWithValue("@eposition", position3.Text);
+                cmd6.Parameters.AddWithValue("@epay_trans", pay_trans3.Text);
+                cmd6.Parameters.AddWithValue("@epay_toll", pay_toll3.Text);
+                cmd6.Parameters.AddWithValue("@epay_room", pay_room3.Text);
+                cmd6.Parameters.AddWithValue("@epay_food", pay_food3.Text);
+                cmd6.Parameters.AddWithValue("@epay_work", pay_work3.Text);
+                cmd6.Parameters.AddWithValue("@epay_total", pay_total3.Text);
+                reader4 = cmd6.ExecuteReader();
+                reader4.Close();
+            }
 
-            //if (!name_copy4.Text.Equals(""))
-            //{
-            //    cmd4.Parameters.AddWithValue("@ext_id", "4");
-            //    cmd4.Parameters.AddWithValue("@report_id", MAX);
-            //    cmd4.Parameters.AddWithValue("@ename", name_copy4.Text);
-            //    cmd4.Parameters.AddWithValue("@eposition", position4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_trans", pay_trans4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_toll", pay_toll4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_room", pay_room4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_food", pay_food4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_work", pay_work4.Text);
-            //    cmd4.Parameters.AddWithValue("@epay_total", pay_total4.Text);
-            //    cmd4.ExecuteNonQuery();
-            //}
-            //// 5.attach_group 검토
+            SqlCommand cmd7 = new SqlCommand(query4, conn);
+            if (!name_copy4.Text.Equals(""))
+            {
+                cmd7.Parameters.AddWithValue("@ext_id", "4");
+                cmd7.Parameters.AddWithValue("@report_id", MAX);
+                cmd7.Parameters.AddWithValue("@ename", name_copy4.Text);
+                cmd7.Parameters.AddWithValue("@eposition", position4.Text);
+                cmd7.Parameters.AddWithValue("@epay_trans", pay_trans4.Text);
+                cmd7.Parameters.AddWithValue("@epay_toll", pay_toll4.Text);
+                cmd7.Parameters.AddWithValue("@epay_room", pay_room4.Text);
+                cmd7.Parameters.AddWithValue("@epay_food", pay_food4.Text);
+                cmd7.Parameters.AddWithValue("@epay_work", pay_work4.Text);
+                cmd7.Parameters.AddWithValue("@epay_total", pay_total4.Text);
+                reader4 = cmd7.ExecuteReader();
+                reader4.Close();
+            }
 
+            // 5.attach_group 검토
+            string query5 = "INSERT INTO ATTACH_GROUP(REPORT_ID, USER_ID, CARD_BILL, TOLL_BILL, TRANSE_BILL, ETC_BILL) VALUES(@report_id, @user_id, @card_bill, @toll_bill, @transe_bill, @etc_bill)";
+            SqlCommand cmd8 = new SqlCommand(query5, conn);
+            cmd8.Parameters.AddWithValue("@report_id", MAX);
+            cmd8.Parameters.AddWithValue("@user_id", user_id);
+
+            if (card_bill.Checked == true)
+                cmd8.Parameters.AddWithValue("@card_bill", "1");
+            else
+                cmd8.Parameters.AddWithValue("@card_bill", "0");
+
+            if (toll_bill.Checked == true)
+                cmd8.Parameters.AddWithValue("@toll_bill", "1");
+            else
+                cmd8.Parameters.AddWithValue("@toll_bill", "0");
+
+            if (transe_bill.Checked == true)
+                cmd8.Parameters.AddWithValue("@transe_bill", "1");
+            else
+                cmd8.Parameters.AddWithValue("@transe_bill", "0");
+
+            if (etc_bill.Checked == true)
+                cmd8.Parameters.AddWithValue("@etc_bill", "1");
+            else
+                cmd8.Parameters.AddWithValue("@etc_bill", "0");
+
+            SqlDataReader reader5 = cmd8.ExecuteReader();
+            reader5.Close();
+
+            conn.Close();
             // 마지막에
             Response.Redirect("./list.aspx");
         }

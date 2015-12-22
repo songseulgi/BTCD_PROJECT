@@ -40,33 +40,6 @@ namespace BTCDProject {
         protected global::System.Web.UI.WebControls.TextBox nameBox;
         
         /// <summary>
-        /// nameFlag 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField nameFlag;
-        
-        /// <summary>
-        /// nameLbl 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label nameLbl;
-        
-        /// <summary>
-        /// idBox 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox idBox;
-        
-        /// <summary>
         /// idFlag 컨트롤입니다.
         /// </summary>
         /// <remarks>
@@ -76,13 +49,13 @@ namespace BTCDProject {
         protected global::System.Web.UI.WebControls.HiddenField idFlag;
         
         /// <summary>
-        /// idLbl 컨트롤입니다.
+        /// idBox 컨트롤입니다.
         /// </summary>
         /// <remarks>
         /// 자동 생성 필드입니다.
         /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label idLbl;
+        protected global::System.Web.UI.WebControls.TextBox idBox;
         
         /// <summary>
         /// chkBtn 컨트롤입니다.
@@ -103,24 +76,6 @@ namespace BTCDProject {
         protected global::System.Web.UI.WebControls.TextBox pwBox;
         
         /// <summary>
-        /// pwFlag 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField pwFlag;
-        
-        /// <summary>
-        /// pwLbl 컨트롤입니다.
-        /// </summary>
-        /// <remarks>
-        /// 자동 생성 필드입니다.
-        /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label pwLbl;
-        
-        /// <summary>
         /// pwrBox 컨트롤입니다.
         /// </summary>
         /// <remarks>
@@ -130,13 +85,13 @@ namespace BTCDProject {
         protected global::System.Web.UI.WebControls.TextBox pwrBox;
         
         /// <summary>
-        /// pwrLbl 컨트롤입니다.
+        /// backBtn 컨트롤입니다.
         /// </summary>
         /// <remarks>
         /// 자동 생성 필드입니다.
         /// 수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동하세요.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label pwrLbl;
+        protected global::System.Web.UI.WebControls.Button backBtn;
         
         /// <summary>
         /// okBtn 컨트롤입니다.

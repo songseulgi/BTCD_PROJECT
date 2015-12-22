@@ -12,30 +12,26 @@
 <body>
     <!-- 주로 aspx.cs에서 작업하게됩니다 -->
     <form id="form1" runat="server">
-        <div class="wrapper">
-
-            <!-- 헤더 -->
-            <div class="header">
-                <div id="img">
-                    <!-- img는 common.css에서 처리해준다 -->
-                </div>
-                <div id="status">
-                    <asp:Label ID="userLbl" CssClass="idLbl" Text="손님Label" runat="server"></asp:Label><asp:Label CssClass="idLbl" text="님&nbsp; |" runat="server"></asp:Label>
-                    <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" OnClick="logoutBtn_Click"/>
+        <div id="Container">
+            <div class="headerwrap">
+                <div class="Top_bar">
+                    <a href="./list.aspx" class="com_logo"></a>
+                    <div id="status">
+                        <asp:Button ID="logoutBtn" Text="로그아웃" runat="server" CssClass="out_btn" OnClick="logoutBtn_Click1" />
+                        <asp:Label CssClass="idLbl" Text="&nbsp;님&nbsp;|&nbsp;" runat="server"></asp:Label><asp:Label ID="userLbl" CssClass="idLbl" Text="송슬기" runat="server"></asp:Label>
+                    </div>
                 </div>
             </div>
 
-            <!-- 네비 -->
-            <div class="nav">
-                <div class="btn">
-                    <asp:ImageButton ID="writeB" ImageUrl="~/img/write.png" runat="server" OnClick="writeBtn_Click"/>
-                </div>
-                <div class="btn">
-                    <asp:ImageButton ID="listB" ImageUrl="~/img/list.png" runat="server" OnClick="listBtn_Click"/>
+            <div class="navimenu">
+                <div class="menu_title">
+                    <a href="./paper_write01.aspx" class="write_icon"></a>
+                    <a href="./list.aspx" class="list_icon"></a>
                 </div>
             </div>
 
             <!-- 컨텐츠 -->
+            <div class="contentBox">
             <div class="content">
                 <!-- table은 datagrid를 사용해 구현 -->
                 <asp:Label ID="tableLbl" CssClass="lbl" Text="Business Travel Command Document" runat="server" /><br /><br />
@@ -65,7 +61,7 @@
                                 <SelectedItemStyle BackColor="#000099" Font-Bold="True" ForeColor="White" />
                             </asp:DataGrid>
             </div>
-
+            </div>
         </div>
     </form>
 </body>

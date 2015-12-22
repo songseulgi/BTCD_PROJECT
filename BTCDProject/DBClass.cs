@@ -9,13 +9,14 @@ namespace BTCDProject
     public class DBClass
     {
         /*
-              이 클래스의 메소드 접근은 DBClass.메소드명()으로 해주시면 됩니다
-              이 클래스의 모든 쿼리들은 SqlDataReader 객체를 반환하므로 사용하는 곳에서
-              SqlDataReader 객체에 대입해 사용해주면 됩니다
-          */
+            이 클래스의 메소드 접근은 DBClass.메소드명()으로 해주시면 됩니다
+            이 클래스의 모든 쿼리들은 SqlDataReader 객체를 반환하므로 사용하는 곳에서
+            SqlDataReader 객체에 대입해 사용해주면 됩니다
+        */
 
         public static SqlConnection conn;
         public static SqlDataReader reader;
+        public static SqlCommand cmd;
 
         // 자원연결 : *************** 이곳의 서버, 아이디, 비밀번호를 변경해주세요 ***************
         public static void connect()
@@ -32,6 +33,8 @@ namespace BTCDProject
             conn.Close();
         }
 
+
+
         // for login.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // 로그인을 위한 쿼리
         public static SqlDataReader loginCheck(string id, string pw) // * user_id값이 아닌 일반 id값과 pw값을 가지고 처리합니다
@@ -41,6 +44,8 @@ namespace BTCDProject
             reader = cmd.ExecuteReader();
             return reader;
         }
+
+
 
         // for join.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // 회원가입시 아이디 체크를 위한 쿼리
@@ -73,22 +78,34 @@ namespace BTCDProject
             reader = cmd.ExecuteReader();
         }
 
+
+
+
         // for list.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // 리스트의 요소들을 위한 쿼리
-        public static SqlDataReader listLoad(string user_id)
+        public static SqlDataAdapter listLoad(string user_id)
         {
-            string query = "SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = " + user_id + ")" + "A";
+            string query = "SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = "
+                            + user_id
+                            + ")"
+                            + "A";
             SqlCommand cmd = new SqlCommand(query, conn);
-            reader = cmd.ExecuteReader();
-            return reader;
+            SqlDataAdapter adapt = new SqlDataAdapter(cmd);
+            return adapt;
         }
+
         public static SqlDataAdapter listLoad2(string user_id)
         {
-            string sql = " SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = " + user_id + ")" + "A";
+            string sql = " SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY report_id DESC) AS ROW_NUM, * FROM REPORTTBL WHERE user_id = "
+                            + user_id
+                            + ")"
+                            + "A";
             SqlCommand cmd = new SqlCommand(sql, conn);
             SqlDataAdapter Adapt = new SqlDataAdapter(cmd);
             return Adapt;
         }
+
+
 
         // for paper_result.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
         // 출장명령서에 데이터를 뿌리기 위한 쿼리 1
@@ -121,8 +138,46 @@ namespace BTCDProject
             return reader;
         }
 
+
+
         // for paper_write.aspx.cs --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        // 명령서의 가장 최근 값을 불러들이기위한 쿼리
+        // insert for REPORTTBL
+        public static SqlCommand reportInsert()
+        {
+            string query = "INSERT INTO REPORTTBL(NAME, COMPANY, POSITION, TERM1, LOCATION1, MEMO1, MEMO_PAY, MEMO_ROOM, MEMO_FOOD, MEMO_WORK) "
+                            + "VALUES(@name, @company, @position, @term, @location, @memo, @memo_pay, @memo_room, @memo_food, @memo_work)";
+            cmd = new SqlCommand(query, conn);
+            return cmd;
+        }
+
+        // insert for TRANSPORT_GROUP
+        public static SqlCommand tgroupInsert()
+        {
+            string query = "INSERT INTO TRANSPORT_GROUP(REPORT_ID, CAR, BUS, SUBWAY, AIRFLY, SHIP) "
+                            + "VALUES(@report_id, @car, @bus, @subway, @airfly, @ship)";
+            cmd = new SqlCommand(query, conn);
+            return cmd;
+        }
+
+        // insert for TRANSPORT
+        public static SqlCommand transportInsert()
+        {
+            string query = "INSERT INTO TRANSPORT(REPORT_ID, START, DEPARTURE, MID_LOC1, MID_LOC2, MID_LOC3, MID_LOC4, MID_LOC5, MOVE_DIS1, MOVE_DIS2, MOVE_DIS3, MOVE_DIS4, MOVE_DIS5, TOTAL_DIS) "
+                           + "VALUES(@report_id, @start, @departure, @mid_loc1, @mid_loc2, @mid_loc3, @mid_loc4, @mid_loc5, @move_dis1, @move_dis2, @move_dis3, @move_dis4, @move_dis5 ,@total_dis)";
+            SqlCommand cmd = new SqlCommand(query, conn);
+            return cmd;
+        }
+
+        // insert for EXTERNTBL
+        public static SqlCommand externInsert()
+        {
+            string query = "INSERT INTO EXTERNTBL(EXT_ID, REPORT_ID, ENAME, EPOSITION, EPAY_TRANS, EPAY_TOLL, EPAY_ROOM, EPAY_FOOD, EPAY_WORK, EPAY_TOTAL) "
+                            + "VALUES(@ext_id, @report_id, @ename, @eposition, @epay_trans, @epay_toll, @epay_room, @epay_food, @epay_work, @epay_total)";
+            cmd = new SqlCommand(query, conn);
+            return cmd;
+        }
+
+        // 명령서의 가장 최근 값을 불러들이기위한 쿼리, insert 구문에서 PK를 각 테이블에 넣어주기 위한 용도로 쓰인다
         public static string getReportMax()
         {
             string max = "";
@@ -136,5 +191,4 @@ namespace BTCDProject
             return max;
         }
     }
-
 }

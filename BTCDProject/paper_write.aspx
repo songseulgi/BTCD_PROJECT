@@ -110,10 +110,10 @@
                             <col width="30%" />
                         </colgroup>
                         <tr>
-                            <td colspan="7"><b>여비규정 제4조 규정에 의거 다음과 같이 출장을 명함.</b></ td>
+                            <td colspan="7"><b>여비규정 제4조 규정에 의거 다음과 같이 출장을 명함.</b></td>
                         </tr>
                         <tr>
-                            <td rowspan="5"> 출장</br >복명</ td>
+                            <td rowspan="5">출장</br >복명</td>
                             <td>성명</td>
                             <td>직급</td>
                             <td>출장기간</td>

@@ -35,128 +35,128 @@ namespace BTCDProject
             page_num = Request.QueryString["page_num"];
             userLbl.Text = id_value;
 
-            string source = @"Server=localhost;uid=sa;pwd=Sb11011101;database=ReportDB";
+            //string source = @"Server=localhost;uid=sa;pwd=123;database=ReportDB";
 
-            // 1. db 연결
-            SqlConnection conn = new SqlConnection(source);
-            conn.Open();
+            //// 1. db 연결
+            //SqlConnection conn = new SqlConnection(source);
+            //conn.Open();
 
-            // 2. 명령어
-            string sql = "SELECT * FROM REPORTTBL WHERE report_id=" + report_id;
-            SqlCommand cmd = new SqlCommand(sql, conn);
+            //// 2. 명령어
+            //string sql = "SELECT * FROM REPORTTBL WHERE report_id=" + report_id;
+            //SqlCommand cmd = new SqlCommand(sql, conn);
 
-            // 3. 명령어 실행
-            SqlDataReader reader = cmd.ExecuteReader();
+            //// 3. 명령어 실행
+            //SqlDataReader reader = cmd.ExecuteReader();
 
-            // 4. 페이지에 보여주기
+            //// 4. 페이지에 보여주기
 
-            try
-            {
-                while (reader.Read())
-                {
-                    this.name.Text = reader["name"].ToString();
-                    this.company.Text = reader["company"].ToString();
-                    this.position.Text = reader["position"].ToString();
-                    this.term1.Text = reader["term1"].ToString();
-                    this.term2.Text = reader["term2"].ToString();
-                    this.location1.Text = reader["location1"].ToString();
-                    this.location2.Text = reader["location2"].ToString();
-                    this.memo1.Text = reader["memo1"].ToString();
-                    this.pay_trans1.Text = reader["pay_trans1"].ToString();
-                    this.pay_trans2.Text = reader["pay_trans2"].ToString();
-                    this.pay_toll1.Text = reader["pay_toll1"].ToString();
-                    this.pay_toll2.Text = reader["pay_toll2"].ToString();
-                    this.pay_room1.Text = reader["pay_room1"].ToString();
-                    this.pay_room2.Text = reader["pay_room2"].ToString();
-                    this.pay_food1.Text = reader["pay_food1"].ToString();
-                    this.pay_food2.Text = reader["pay_food2"].ToString();
-                    this.pay_work1.Text = reader["pay_work1"].ToString();
-                    this.pay_work2.Text = reader["pay_work2"].ToString();
-                    this.pay_total1.Text = reader["pay_total1"].ToString();
-                    this.pay_total2.Text = reader["pay_total2"].ToString();
-                    this.label_memo1.Text = reader["label_memo1"].ToString();
-                    this.label_memo2.Text = reader["label_memo2"].ToString();
-                    this.label_memo3.Text = reader["label_memo3"].ToString();
-                    this.label_memo4.Text = reader["label_memo4"].ToString();
-                }
-            }
-            catch (Exception ee)
-            {
-                Response.Write(ee.Message);
-            }
+            //try
+            //{
+            //    while (reader.Read())
+            //    {
+            //        this.name.Text = reader["name"].ToString();
+            //        this.company.Text = reader["company"].ToString();
+            //        this.position.Text = reader["position"].ToString();
+            //        this.term1.Text = reader["term1"].ToString();
+            //        this.term2.Text = reader["term2"].ToString();
+            //        this.location1.Text = reader["location1"].ToString();
+            //        this.location2.Text = reader["location2"].ToString();
+            //        this.memo1.Text = reader["memo1"].ToString();
+            //        this.pay_trans1.Text = reader["pay_trans1"].ToString();
+            //        this.pay_trans2.Text = reader["pay_trans2"].ToString();
+            //        this.pay_toll1.Text = reader["pay_toll1"].ToString();
+            //        this.pay_toll2.Text = reader["pay_toll2"].ToString();
+            //        this.pay_room1.Text = reader["pay_room1"].ToString();
+            //        this.pay_room2.Text = reader["pay_room2"].ToString();
+            //        this.pay_food1.Text = reader["pay_food1"].ToString();
+            //        this.pay_food2.Text = reader["pay_food2"].ToString();
+            //        this.pay_work1.Text = reader["pay_work1"].ToString();
+            //        this.pay_work2.Text = reader["pay_work2"].ToString();
+            //        this.pay_total1.Text = reader["pay_total1"].ToString();
+            //        this.pay_total2.Text = reader["pay_total2"].ToString();
+            //        this.label_memo1.Text = reader["label_memo1"].ToString();
+            //        this.label_memo2.Text = reader["label_memo2"].ToString();
+            //        this.label_memo3.Text = reader["label_memo3"].ToString();
+            //        this.label_memo4.Text = reader["label_memo4"].ToString();
+            //    }
+            //}
+            //catch (Exception ee)
+            //{
+            //    Response.Write(ee.Message);
+            //}
 
-            // 5. db close
-            reader.Close();
+            //// 5. db close
+            //reader.Close();
 
 
-            // 상단 체크값 가져오기
-            string sql3 = "SELECT CAR, TRAIN, BUS, BOAT, AIR, START, DEPARTURE FROM TRANSPORT WHERE REPORT_ID=" + report_id;
-            SqlCommand cmd3 = new SqlCommand(sql3, conn);
-            reader = cmd3.ExecuteReader();
+            //// 상단 체크값 가져오기
+            //string sql3 = "SELECT CAR, TRAIN, BUS, BOAT, AIR, START, DEPARTURE FROM TRANSPORT WHERE REPORT_ID=" + report_id;
+            //SqlCommand cmd3 = new SqlCommand(sql3, conn);
+            //reader = cmd3.ExecuteReader();
 
-            while (reader.Read())
-            {
-                if (reader["car"].ToString().Equals("1"))
-                {
-                    carCck.Checked = true;
-                }
+            //while (reader.Read())
+            //{
+            //    if (reader["car"].ToString().Equals("1"))
+            //    {
+            //        carCck.Checked = true;
+            //    }
 
-                if (reader["train"].ToString().Equals("1"))
-                {
-                    trainCck.Checked = true;
-                }
+            //    if (reader["train"].ToString().Equals("1"))
+            //    {
+            //        trainCck.Checked = true;
+            //    }
 
-                if (reader["bus"].ToString().Equals("1"))
-                {
-                    busCck.Checked = true;
-                }
+            //    if (reader["bus"].ToString().Equals("1"))
+            //    {
+            //        busCck.Checked = true;
+            //    }
 
-                if (reader["boat"].ToString().Equals("1"))
-                {
-                    boatCck.Checked = true;
-                }
+            //    if (reader["boat"].ToString().Equals("1"))
+            //    {
+            //        boatCck.Checked = true;
+            //    }
 
-                if (reader["air"].ToString().Equals("1"))
-                {
-                    airCck.Checked = true;
-                }
+            //    if (reader["air"].ToString().Equals("1"))
+            //    {
+            //        airCck.Checked = true;
+            //    }
 
-                start1.Text = reader["start"].ToString();
-                end.Text = reader["departure"].ToString();
-            }
+            //    start1.Text = reader["start"].ToString();
+            //    end.Text = reader["departure"].ToString();
+            //}
 
-            reader.Close();
+            //reader.Close();
 
-            // 하단 체크값 가져오기
-            string sql2 = "SELECT * FROM ATTACH_GROUP WHERE REPORT_ID=" + report_id;
-            SqlCommand cmd2 = new SqlCommand(sql2, conn);
-            reader = cmd2.ExecuteReader();
+            //// 하단 체크값 가져오기
+            //string sql2 = "SELECT * FROM ATTACH_GROUP WHERE REPORT_ID=" + report_id;
+            //SqlCommand cmd2 = new SqlCommand(sql2, conn);
+            //reader = cmd2.ExecuteReader();
 
-            while (reader.Read())
-            {
-                if (reader["card_bill"].ToString().Equals("1"))
-                {
-                    card_bill.Checked = true;
-                }
+            //while (reader.Read())
+            //{
+            //    if (reader["card_bill"].ToString().Equals("1"))
+            //    {
+            //        card_bill.Checked = true;
+            //    }
 
-                if (reader["toll_bill"].ToString().Equals("1"))
-                {
-                    toll_bill.Checked = true;
-                }
+            //    if (reader["toll_bill"].ToString().Equals("1"))
+            //    {
+            //        toll_bill.Checked = true;
+            //    }
 
-                if (reader["transe_bill"].ToString().Equals("1"))
-                {
-                    transe_bill.Checked = true;
-                }
+            //    if (reader["transe_bill"].ToString().Equals("1"))
+            //    {
+            //        transe_bill.Checked = true;
+            //    }
 
-                if (reader["etc_bill"].ToString().Equals("1"))
-                {
-                    etc_bill.Checked = true;
-                }
-            }
+            //    if (reader["etc_bill"].ToString().Equals("1"))
+            //    {
+            //        etc_bill.Checked = true;
+            //    }
+            //}
 
-            reader.Close();
-            conn.Close();
+            //reader.Close();
+            //conn.Close();
         }
 
         // 돌아가기 버튼클릭
