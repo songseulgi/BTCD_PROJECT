@@ -47,7 +47,10 @@ namespace BTCDProject
             string s = "window.open('" + url + "','width=800,height=800,resizable=yes'); ";
             ClientScript.RegisterStartupScript(this.GetType(), "script", s, true);
         }
+        protected void show_map(object sender, EventArgs e)
+        {
 
+        }
         protected void logoutBtn_Click(object sender, EventArgs e)
         {
             Session["user_id"] = "";
